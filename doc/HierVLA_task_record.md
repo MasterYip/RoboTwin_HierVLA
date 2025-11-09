@@ -36,6 +36,11 @@
   - [ ] "按指令组装工具" (Assemble tools by instruction)
   - [ ] "整理混杂餐具并归位" (Organize and return utensils)
 
+---
+
+> [!NOTE]
+> Checkout Pi0 train data gen & training command see https://robotwin-platform.github.io/doc/usage/Pi0.html#1-environment-setup
+
 Data Collection Commands:
 
 ```bash
@@ -57,6 +62,8 @@ bash eval.sh ${task_name} ${task_config} ${train_config_name} ${model_name} ${se
 # To evaluate a policy trained on the `demo_clean` setting and tested on the `demo_randomized` setting, run:
 bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full demo_clean 0 0
 ```
+
+---
 
 ### Implementation (实现方案)
 
