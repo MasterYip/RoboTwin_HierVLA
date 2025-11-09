@@ -1,5 +1,10 @@
 # RoboTwin VLA Evaluation Pipeline Documentation
 
+## Useful Documentations
+
+- RoboTwin2 Official Doc: https://robotwin-platform.github.io/doc/usage/index.html
+- DeepWiki: https://deepwiki.com/RoboTwin-Platform/RoboTwin
+
 ## Overview
 
 RoboTwin is a comprehensive bimanual robotic manipulation platform that supports various Vision-Language-Action (VLA) models for robotic policy evaluation. This documentation focuses on the VLA evaluation pipeline, particularly the PI0 model deployment framework.
