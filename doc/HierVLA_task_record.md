@@ -39,9 +39,9 @@
 ---
 
 > [!NOTE]
-> Checkout Pi0 train data gen & training command see https://robotwin-platform.github.io/doc/usage/Pi0.html#1-environment-setup
+> Checkout Pi0 train data gen & training command see <https://robotwin-platform.github.io/doc/usage/Pi0.html#1-environment-setup>
 
-Data Collection Commands:
+**Data Collection**
 
 ```bash
 # Under RoboTwin_HierVLA root directory
@@ -49,7 +49,7 @@ bash collect_data.sh stack_blocks_three demo_randomized 0
 bash collect_data.sh blocks_ranking_rgb demo_randomized 1
 ```
 
-Convert Data to pi0 training data:
+**Convert Data to pi0 training data**
 
 ```bash
 # Under RoboTwin_HierVLA/policy/pi0 directory
@@ -67,20 +67,24 @@ bash generate.sh ./training_data/flatpi0_multask/ flatpi0_multask
 
 **Finetune Model**
 
-> In `RoboTwin_HierVLA/policy/pi0/src/openpi/training/config.py`, you only need to write repo_id on your datasets.(e.g., repo_id=demo_clean_repo) 
+> In `RoboTwin_HierVLA/policy/pi0/src/openpi/training/config.py`, you only need to write repo_id on your datasets.(e.g., repo_id=demo_clean_repo)
 
 > [!WARNING]
 > Change UV source for uv update:
+>
 > ```bash
 > export UV_INDEX_URL=http://nexus.sii.shaipower.online/repository/pypi/simple/
 > ```
+>
 > Update openpi cache path by
+>
 > ```bash
 > export OPENPI_DATA_HOME=../../.cache/openpi
 > # Use abs dir
 > export OPENPI_DATA_HOME=/inspire/ssd/project/25jinqiu07/public/hiervla_003/RoboTwin_HierVLA/.cache/openpi
 > ```
-> AND you should put `paligemma_tokenizer` and `pi0_base` into the cache folder
+>
+> AND you should put `paligemma_tokenizer` and `pi0_base` into the cache folder.
 
 ```bash
 # compute norm_stat for dataset
@@ -95,7 +99,7 @@ uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0,1,2,3
 ```
 
-Eval Trained Pi0 Model Commands:
+**Eval Trained Pi0 Model Commands**
 
 ```bash
 # Under RoboTwin_HierVLA/policy/pi0 directory
@@ -138,16 +142,16 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 #### Qwen Deployment
 
-Qwen: https://github.com/QwenLM/Qwen3-VL/tree/main
+Qwen: <https://github.com/QwenLM/Qwen3-VL/tree/main>
 
 dependency:
+
 ```bash
 conda deactivate
 source .venv/bin/activate
 pip install "transformers>=4.57.0"
 pip install accelerate
 ```
-
 
 ### Strategy 2: Internal Hierarchical Modeling (内化分层策略)
 

@@ -1,7 +1,8 @@
 import numpy as np
 import torch
 import dill
-import os, sys
+import os
+import sys
 
 current_file_path = os.path.abspath(__file__)
 parent_directory = os.path.dirname(current_file_path)
@@ -25,7 +26,7 @@ def encode_obs(observation):
 def get_model(usr_args):
     """
     Get model based on configuration
-    
+
     Args:
         usr_args: Dictionary with keys:
             - train_config_name: Training config name
@@ -35,29 +36,29 @@ def get_model(usr_args):
             - hierarchical (optional): If True, use hierarchical Qwen+PI0 policy
             - qwen_model_path (optional): Path to Qwen3VL model
             - replan_frequency (optional): Replanning frequency for hierarchical policy
-    
+
     Returns:
         Policy model (PI0 or HierarchicalQwenPI0)
     """
     train_config_name, model_name, checkpoint_id, pi0_step = (
-        usr_args["train_config_name"], 
+        usr_args["train_config_name"],
         usr_args["model_name"],
-        usr_args["checkpoint_id"], 
+        usr_args["checkpoint_id"],
         usr_args["pi0_step"]
     )
-    
+
     # Check if hierarchical policy is requested
     if usr_args.get("hierarchical", False):
         print("Loading Hierarchical Qwen3VL + PI0 Policy...")
         from hier_qwen_pi import HierarchicalQwenPI0
-        
+
         return HierarchicalQwenPI0(
             train_config_name=train_config_name,
             model_name=model_name,
             checkpoint_id=checkpoint_id,
             pi0_step=pi0_step,
-            qwen_model_path=usr_args.get("qwen_model_path", 
-                "/inspire/ssd/project/25jinqiu07/public/hiervla_003/Qwen3-VL-8B-Instruct"),
+            qwen_model_path=usr_args.get("qwen_model_path",
+                                         "/inspire/ssd/project/25jinqiu07/public/hiervla_003/Qwen3-VL-8B-Instruct"),
             replan_frequency=usr_args.get("replan_frequency", 10)
         )
     else:
