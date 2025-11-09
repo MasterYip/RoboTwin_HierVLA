@@ -139,6 +139,13 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 Qwen: https://github.com/QwenLM/Qwen3-VL/tree/main
 
+dependency:
+```bash
+conda deactivate
+source .venv/bin/activate
+pip install "transformers>=4.57.0"
+pip install accelerate
+```
 
 
 ### Strategy 2: Internal Hierarchical Modeling (内化分层策略)

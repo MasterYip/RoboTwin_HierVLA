@@ -11,3 +11,4 @@ train_config_name: null
 model_name: null
 checkpoint_id: 1000
 pi0_step: 50
+hierarchical: true
