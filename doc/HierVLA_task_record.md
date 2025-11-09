@@ -62,6 +62,7 @@ bash process_data_pi0.sh place_burger_fries demo_randomized 50
 # repo_id: The name of the dataset (e.g., my_repo)
 # bash generate.sh ${hdf5_path} ${repo_id}
 bash generate.sh ./training_data/flatpi0/ flatpi0
+bash generate.sh ./training_data/flatpi0_multask/ flatpi0_multask
 ```
 
 **Finetune Model**
