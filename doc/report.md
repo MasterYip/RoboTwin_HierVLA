@@ -43,7 +43,13 @@
 
 ![alt text](imgs/git_vcs.png)
 
-### 2.3. 数据采集与微调管线搭建 (Data Collection & Fine-tuning Pipeline)
+### 2.3. Xmind思维导图工作流 (Xmind Workflow)
+
+基于Xmind思维导图，规划项目工作流与任务分配，确保各成员明确职责与时间节点。
+
+![alt text](imgs/task_assign.png) ![alt text](imgs/task_decompose.png)
+
+### 2.4. 数据采集与微调管线搭建 (Data Collection & Fine-tuning Pipeline)
 
 > [!NOTE]
 > Checkout Pi0 train data gen & training command see <https://robotwin-platform.github.io/doc/usage/Pi0.html#1-environment-setup>
