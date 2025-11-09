@@ -49,6 +49,35 @@ bash collect_data.sh stack_blocks_three demo_randomized 0
 bash collect_data.sh blocks_ranking_rgb demo_randomized 0
 ```
 
+Convert Data to pi0 training data:
+
+```bash
+# Under RoboTwin_HierVLA/policy/pi0 directory
+mkdir processed_data && mkdir training_data
+# bash process_data_pi0.sh ${task_name} ${task_config} ${expert_data_num}
+bash process_data_pi0.sh stack_blocks_three demo_randomized 50
+bash process_data_pi0.sh place_burger_fries demo_randomized 50
+
+# hdf5_path: The path to the generated HDF5 data (e.g., ./training_data/${model_name}/)
+# repo_id: The name of the dataset (e.g., my_repo)
+# bash generate.sh ${hdf5_path} ${repo_id}
+bash generate.sh ./training_data/flatpi0/ flatpi0_repo
+```
+
+Finetune Model
+
+```bash
+# compute norm_stat for dataset
+uv run scripts/compute_norm_stats.py --config-name ${train_config_name}
+# uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
+
+# train_config_name: The name corresponding to the config in _CONFIGS, such as pi0_base_aloha_robotwin_full
+# model_name: You can choose any name for your model
+# gpu_use: if not using multi gpu,set to gpu_id like 0;else set like 0,1,2,3
+bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
+#bash finetune.sh pi0_base_aloha_robotwin_full demo_clean 0,1,2,3
+```
+
 Eval Trained Pi0 Model Commands:
 
 ```bash
