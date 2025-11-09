@@ -73,6 +73,11 @@ Finetune Model
 > ```bash
 > export UV_INDEX_URL=http://nexus.sii.shaipower.online/repository/pypi/simple/
 > ```
+> Update openpi cache path by
+> ```bash
+> export OPENPI_DATA_HOME=../../.cache/openpi
+> ```
+> AND you should put `paligemma_tokenizer` and `pi0_base` into the cache folder
 
 ```bash
 # compute norm_stat for dataset
@@ -84,7 +89,7 @@ uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 # gpu_use: if not using multi gpu,set to gpu_id like 0;else set like 0,1,2,3
 # bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
 #bash finetune.sh pi0_base_aloha_robotwin_full demo_clean 0,1,2,3
-bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0
+bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0,1,2,3
 ```
 
 Eval Trained Pi0 Model Commands:
