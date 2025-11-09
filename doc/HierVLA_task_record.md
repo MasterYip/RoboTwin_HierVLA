@@ -64,7 +64,7 @@ bash process_data_pi0.sh place_burger_fries demo_randomized 50
 bash generate.sh ./training_data/flatpi0/ flatpi0
 ```
 
-Finetune Model
+**Finetune Model**
 
 > In `RoboTwin_HierVLA/policy/pi0/src/openpi/training/config.py`, you only need to write repo_id on your datasets.(e.g., repo_id=demo_clean_repo) 
 
@@ -76,7 +76,7 @@ Finetune Model
 > Update openpi cache path by
 > ```bash
 > export OPENPI_DATA_HOME=../../.cache/openpi
-> # abs dir
+> # Use abs dir
 > export OPENPI_DATA_HOME=/inspire/ssd/project/25jinqiu07/public/hiervla_003/RoboTwin_HierVLA/.cache/openpi
 > ```
 > AND you should put `paligemma_tokenizer` and `pi0_base` into the cache folder
@@ -134,6 +134,12 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
   - High-level planner: ___________
   - Low-level executor: ___________
   - Integration status: ___________
+
+#### Qwen Deployment
+
+Qwen: https://github.com/QwenLM/Qwen3-VL/tree/main
+
+
 
 ### Strategy 2: Internal Hierarchical Modeling (内化分层策略)
 
