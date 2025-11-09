@@ -32,16 +32,31 @@
   - [ ] Blocks Ranking Size - Data Collection
   - [ ] Stack Blocks Three - Data Collection
 
+- **Complex Tasks (复杂任务)**:
+  - [ ] "按指令组装工具" (Assemble tools by instruction)
+  - [ ] "整理混杂餐具并归位" (Organize and return utensils)
+
 Data Collection Commands:
 
 ```bash
+# Under RoboTwin_HierVLA root directory
 bash collect_data.sh stack_blocks_three demo_randomized 0
 bash collect_data.sh blocks_ranking_rgb demo_randomized 0
 ```
 
-- **Complex Tasks (复杂任务)**:
-  - [ ] "按指令组装工具" (Assemble tools by instruction)
-  - [ ] "整理混杂餐具并归位" (Organize and return utensils)
+Eval Trained Pi0 Model Commands:
+
+```bash
+# Under RoboTwin_HierVLA/policy/pi0 directory
+# ckpt_path like: policy/pi0/checkpoints/pi0_base_aloha_robotwin_full/demo_clean/30000
+bash eval.sh ${task_name} ${task_config} ${train_config_name} ${model_name} ${seed} ${gpu_id}
+# bash eval.sh beat_block_hammer demo_clean pi0_base_aloha_robotwin_full demo_clean 0 0
+# This command trains the policy using the `demo_clean` setting ($model_name)
+# and evaluates it using the same `demo_clean` setting ($task_config).
+
+# To evaluate a policy trained on the `demo_clean` setting and tested on the `demo_randomized` setting, run:
+bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full demo_clean 0 0
+```
 
 ### Implementation (实现方案)
 
