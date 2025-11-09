@@ -46,7 +46,7 @@ Data Collection Commands:
 ```bash
 # Under RoboTwin_HierVLA root directory
 bash collect_data.sh stack_blocks_three demo_randomized 0
-bash collect_data.sh blocks_ranking_rgb demo_randomized 0
+bash collect_data.sh blocks_ranking_rgb demo_randomized 1
 ```
 
 Convert Data to pi0 training data:
@@ -66,16 +66,25 @@ bash generate.sh ./training_data/flatpi0/ flatpi0_repo
 
 Finetune Model
 
+> In `RoboTwin_HierVLA/policy/pi0/src/openpi/training/config.py`, you only need to write repo_id on your datasets.(e.g., repo_id=demo_clean_repo) 
+
+> [!WARNING]
+> Change UV source for uv update:
+> ```bash
+> export UV_INDEX_URL=http://nexus.sii.shaipower.online/repository/pypi/simple/
+> ```
+
 ```bash
 # compute norm_stat for dataset
-uv run scripts/compute_norm_stats.py --config-name ${train_config_name}
-# uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
+# uv run scripts/compute_norm_stats.py --config-name ${train_config_name}
+uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 
 # train_config_name: The name corresponding to the config in _CONFIGS, such as pi0_base_aloha_robotwin_full
 # model_name: You can choose any name for your model
 # gpu_use: if not using multi gpu,set to gpu_id like 0;else set like 0,1,2,3
-bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
+# bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
 #bash finetune.sh pi0_base_aloha_robotwin_full demo_clean 0,1,2,3
+bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0
 ```
 
 Eval Trained Pi0 Model Commands:
