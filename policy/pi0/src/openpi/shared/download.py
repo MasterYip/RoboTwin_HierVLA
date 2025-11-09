@@ -64,6 +64,7 @@ def maybe_download(url: str, *, force_download: bool = False, **kwargs) -> pathl
         return path.resolve()
 
     cache_dir = get_cache_dir()
+    print("Cache Dir:", cache_dir)
 
     local_path = cache_dir / parsed.netloc / parsed.path.strip("/")
     local_path = local_path.resolve()

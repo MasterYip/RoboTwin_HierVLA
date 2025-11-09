@@ -61,7 +61,7 @@ bash process_data_pi0.sh place_burger_fries demo_randomized 50
 # hdf5_path: The path to the generated HDF5 data (e.g., ./training_data/${model_name}/)
 # repo_id: The name of the dataset (e.g., my_repo)
 # bash generate.sh ${hdf5_path} ${repo_id}
-bash generate.sh ./training_data/flatpi0/ flatpi0_repo
+bash generate.sh ./training_data/flatpi0/ flatpi0
 ```
 
 Finetune Model
@@ -76,6 +76,8 @@ Finetune Model
 > Update openpi cache path by
 > ```bash
 > export OPENPI_DATA_HOME=../../.cache/openpi
+> # abs dir
+> export OPENPI_DATA_HOME=/inspire/ssd/project/25jinqiu07/public/hiervla_003/RoboTwin_HierVLA/.cache/openpi
 > ```
 > AND you should put `paligemma_tokenizer` and `pi0_base` into the cache folder
 
@@ -98,12 +100,13 @@ Eval Trained Pi0 Model Commands:
 # Under RoboTwin_HierVLA/policy/pi0 directory
 # ckpt_path like: policy/pi0/checkpoints/pi0_base_aloha_robotwin_full/demo_clean/30000
 bash eval.sh ${task_name} ${task_config} ${train_config_name} ${model_name} ${seed} ${gpu_id}
+bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full flatpi0 0 0
 # bash eval.sh beat_block_hammer demo_clean pi0_base_aloha_robotwin_full demo_clean 0 0
 # This command trains the policy using the `demo_clean` setting ($model_name)
 # and evaluates it using the same `demo_clean` setting ($task_config).
 
 # To evaluate a policy trained on the `demo_clean` setting and tested on the `demo_randomized` setting, run:
-bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full demo_clean 0 0
+# bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full demo_clean 0 0
 ```
 
 ---
