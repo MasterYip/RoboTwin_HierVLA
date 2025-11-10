@@ -347,25 +347,25 @@ def eval_policy(task_name,
         # TASK_ENV._take_picture()
         now_seed += 1
     
-    # Save benchmark results to JSON
-    if save_dir:
-        benchmark_file = os.path.join(save_dir, "_benchmark_results.json")
-        benchmark_data = benchmark.to_dict()
-        with open(benchmark_file, "w") as f:
-            json.dump(benchmark_data, f, indent=2)
-        print(f"\n\033[96mBenchmark results saved to: {benchmark_file}\033[0m")
-        
-        # Print summary
-        agg = benchmark_data['aggregate_metrics']
-        print(f"\n{'='*60}")
-        print(f"Benchmark Summary")
-        print(f"{'='*60}")
-        print(f"Success Rate: {agg['success_metrics']['success_rate']*100:.1f}%")
-        print(f"Mean Steps: {agg['step_metrics']['mean_steps']:.1f} ± {agg['step_metrics']['std_steps']:.1f}")
-        print(f"Mean Duration: {agg['duration_metrics']['mean_duration']:.2f}s")
-        print(f"Overall Smoothness: {agg['smoothness_metrics']['mean_overall_smoothness']:.4f}")
-        print(f"Planning Failures: {agg['robustness_metrics']['total_planning_failures']}")
-        print(f"{'='*60}\n")
+        # Save benchmark results to JSON
+        if save_dir:
+            benchmark_file = os.path.join(save_dir, "_benchmark_results.json")
+            benchmark_data = benchmark.to_dict()
+            with open(benchmark_file, "w") as f:
+                json.dump(benchmark_data, f, indent=2)
+            print(f"\n\033[96mBenchmark results saved to: {benchmark_file}\033[0m")
+            
+            # Print summary
+            agg = benchmark_data['aggregate_metrics']
+            print(f"\n{'='*60}")
+            print(f"Benchmark Summary")
+            print(f"{'='*60}")
+            print(f"Success Rate: {agg['success_metrics']['success_rate']*100:.1f}%")
+            print(f"Mean Steps: {agg['step_metrics']['mean_steps']:.1f} ± {agg['step_metrics']['std_steps']:.1f}")
+            print(f"Mean Duration: {agg['duration_metrics']['mean_duration']:.2f}s")
+            print(f"Overall Smoothness: {agg['smoothness_metrics']['mean_overall_smoothness']:.4f}")
+            print(f"Planning Failures: {agg['robustness_metrics']['total_planning_failures']}")
+            print(f"{'='*60}\n")
 
     return now_seed, TASK_ENV.suc
 
