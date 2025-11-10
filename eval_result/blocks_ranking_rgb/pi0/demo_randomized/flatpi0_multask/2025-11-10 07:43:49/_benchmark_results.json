@@ -3,30 +3,30 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 23,
+    "total_episodes": 33,
     "success_metrics": {
-      "success_rate": 0.0,
-      "success_count": 0,
-      "failure_count": 23
+      "success_rate": 0.030303030303030304,
+      "success_count": 1,
+      "failure_count": 32
     },
     "step_metrics": {
-      "mean_steps": 1200.0,
-      "std_steps": 0.0,
-      "min_steps": 1200,
+      "mean_steps": 1177.5757575757575,
+      "std_steps": 126.85067104922308,
+      "min_steps": 460,
       "max_steps": 1200,
-      "mean_steps_successful": 0.0
+      "mean_steps_successful": 460.0
     },
     "duration_metrics": {
-      "mean_duration": 442.99133409624517,
-      "std_duration": 17.695334929132812,
-      "total_duration": 10188.800684213638
+      "mean_duration": 434.20694239934284,
+      "std_duration": 48.605785038462656,
+      "total_duration": 14328.829099178314
     },
     "smoothness_metrics": {
-      "mean_overall_smoothness": 0.0,
+      "mean_overall_smoothness": 0.9998578317080131,
       "std_overall_smoothness": 0.0,
-      "mean_action_smoothness": 0.0,
-      "mean_joint_smoothness": 0.0,
-      "mean_action_change": 0.0
+      "mean_action_smoothness": 0.9997363198422006,
+      "mean_joint_smoothness": 0.9999793435738257,
+      "mean_action_change": 0.006523276384513541
     },
     "robustness_metrics": {
       "mean_planning_failures": 0.0,
@@ -563,6 +563,236 @@
         "max_joint_acceleration": 0.7999405368504122,
         "joint_smoothness_score": 0.9993079369331097,
         "overall_smoothness": 0.9993829872194251
+      }
+    },
+    {
+      "episode_id": 23,
+      "seed": 100028,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Place red block, green block, and blue block sequentially in a row, starting with red block.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 377.62288331985474,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.0051336874905745155,
+        "max_action_change": 0.5871788038839262,
+        "std_action_change": 0.015578741396556352,
+        "action_smoothness_score": 0.9997573617041302,
+        "mean_joint_acceleration": 0.0021634764417528627,
+        "max_joint_acceleration": 0.5555596455940459,
+        "joint_smoothness_score": 0.9998815229861692,
+        "overall_smoothness": 0.9998194423451496
+      }
+    },
+    {
+      "episode_id": 24,
+      "seed": 100029,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Place red block, green block, and blue block sequentially in a row, starting with red block.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 444.5905530452728,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.00846322693914594,
+        "max_action_change": 0.8356131618812421,
+        "std_action_change": 0.021787194687017095,
+        "action_smoothness_score": 0.999525543363625,
+        "mean_joint_acceleration": 0.0035345562589057453,
+        "max_joint_acceleration": 0.8352283881797407,
+        "joint_smoothness_score": 0.9995922415739793,
+        "overall_smoothness": 0.9995588924688021
+      }
+    },
+    {
+      "episode_id": 25,
+      "seed": 100030,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Arrange red block, green block, and blue block in a row with red block on the left, green block in the middle, and blue block on the right.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 457.68927788734436,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006911338914762775,
+        "max_action_change": 0.7774668606437591,
+        "std_action_change": 0.023199683267449898,
+        "action_smoothness_score": 0.9994620642269347,
+        "mean_joint_acceleration": 0.0030724637172024304,
+        "max_joint_acceleration": 0.7774028826483814,
+        "joint_smoothness_score": 0.9994185107717147,
+        "overall_smoothness": 0.9994402874993247
+      }
+    },
+    {
+      "episode_id": 26,
+      "seed": 100033,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Set red block, green block, and blue block in a row from left to right in the order red, green, blue.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 428.23223209381104,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006646266772880747,
+        "max_action_change": 0.8117585489265504,
+        "std_action_change": 0.01889636886175166,
+        "action_smoothness_score": 0.9996430546992828,
+        "mean_joint_acceleration": 0.002684124644348247,
+        "max_joint_acceleration": 0.8268889575386098,
+        "joint_smoothness_score": 0.9997586169704362,
+        "overall_smoothness": 0.9997008358348596
+      }
+    },
+    {
+      "episode_id": 27,
+      "seed": 100034,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Set red block on the left, then green block in the center, and finally blue block on the right.",
+      "success": true,
+      "completion_steps": 460,
+      "step_limit": 1200,
+      "step_utilization": 0.38333333333333336,
+      "duration_seconds": 184.97470927238464,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006523276384513541,
+        "max_action_change": 0.13510935081042907,
+        "std_action_change": 0.016240372636208623,
+        "action_smoothness_score": 0.9997363198422006,
+        "mean_joint_acceleration": 0.0022386104906074586,
+        "max_joint_acceleration": 0.09939349791806779,
+        "joint_smoothness_score": 0.9999793435738257,
+        "overall_smoothness": 0.9998578317080131
+      }
+    },
+    {
+      "episode_id": 28,
+      "seed": 100035,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Set red block, green block, and blue block in a row from left to right in the order red, green, blue.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 437.45183801651,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.008280041949622369,
+        "max_action_change": 0.8088513412708919,
+        "std_action_change": 0.02398713051120406,
+        "action_smoothness_score": 0.9994249484444,
+        "mean_joint_acceleration": 0.003682293673030478,
+        "max_joint_acceleration": 0.8081408006146997,
+        "joint_smoothness_score": 0.9994239741326014,
+        "overall_smoothness": 0.9994244612885007
+      }
+    },
+    {
+      "episode_id": 29,
+      "seed": 100037,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Place red block on the left, then set green block to its right and blue block next to green block.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 450.6114020347595,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006781787921346204,
+        "max_action_change": 0.8464500995446073,
+        "std_action_change": 0.01971473062222339,
+        "action_smoothness_score": 0.9996114804026396,
+        "mean_joint_acceleration": 0.0028684620380115666,
+        "max_joint_acceleration": 0.8465731373164702,
+        "joint_smoothness_score": 0.9997194880077971,
+        "overall_smoothness": 0.9996654842052184
+      }
+    },
+    {
+      "episode_id": 30,
+      "seed": 100040,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Set red block, green block, and blue block in a row from left to right in the order red, green, blue.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 419.9924147129059,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.01054667328737845,
+        "max_action_change": 0.8160052936112082,
+        "std_action_change": 0.02572681016035841,
+        "action_smoothness_score": 0.9993385690194765,
+        "mean_joint_acceleration": 0.003954786750719342,
+        "max_joint_acceleration": 0.8144563338306983,
+        "joint_smoothness_score": 0.9994654083723161,
+        "overall_smoothness": 0.9994019886958962
+      }
+    },
+    {
+      "episode_id": 31,
+      "seed": 100041,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Set red block on the left, then green block in the center, and finally blue block on the right.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 467.20393896102905,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.008825346019328896,
+        "max_action_change": 0.7750341699710163,
+        "std_action_change": 0.019811859212264492,
+        "action_smoothness_score": 0.9996076442380214,
+        "mean_joint_acceleration": 0.0028618213783362387,
+        "max_joint_acceleration": 0.7745946265733837,
+        "joint_smoothness_score": 0.9998868737018913,
+        "overall_smoothness": 0.9997472589699563
+      }
+    },
+    {
+      "episode_id": 32,
+      "seed": 100044,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Arrange red block, green block, and blue block side by side, starting with red block on the left.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 471.65916562080383,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005107049113665257,
+        "max_action_change": 0.7285075642052653,
+        "std_action_change": 0.015635860464231627,
+        "action_smoothness_score": 0.9997555796234692,
+        "mean_joint_acceleration": 0.0021621526597938637,
+        "max_joint_acceleration": 0.7324004617209026,
+        "joint_smoothness_score": 0.9998898411161743,
+        "overall_smoothness": 0.9998227103698217
       }
     }
   ]

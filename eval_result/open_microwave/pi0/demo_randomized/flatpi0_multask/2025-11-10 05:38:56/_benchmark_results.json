@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 20,
+    "total_episodes": 24,
     "success_metrics": {
-      "success_rate": 0.05,
+      "success_rate": 0.041666666666666664,
       "success_count": 1,
-      "failure_count": 19
+      "failure_count": 23
     },
     "step_metrics": {
-      "mean_steps": 1435.95,
-      "std_steps": 279.1874773337802,
+      "mean_steps": 1446.625,
+      "std_steps": 255.9775075568164,
       "min_steps": 219,
       "max_steps": 1500,
       "mean_steps_successful": 219.0
     },
     "duration_metrics": {
-      "mean_duration": 889.9007895946503,
-      "std_duration": 186.0363555256138,
-      "total_duration": 17798.015791893005
+      "mean_duration": 884.7118149101734,
+      "std_duration": 171.6233093240531,
+      "total_duration": 21233.083557844162
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.9994721863120024,
@@ -494,6 +494,98 @@
         "max_joint_acceleration": 0.9787706756280828,
         "joint_smoothness_score": 0.9995962039115225,
         "overall_smoothness": 0.9996696617984465
+      }
+    },
+    {
+      "episode_id": 20,
+      "seed": 100031,
+      "task_name": "open_microwave",
+      "instruction": "Move the left arm and open the medium gray microwave with top vents.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 768.495876789093,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.003907582880319271,
+        "max_action_change": 0.9737621738854925,
+        "std_action_change": 0.01925533536048896,
+        "action_smoothness_score": 0.9996293694780702,
+        "mean_joint_acceleration": 0.0027399826906301305,
+        "max_joint_acceleration": 0.9730347787195581,
+        "joint_smoothness_score": 0.9994541610166434,
+        "overall_smoothness": 0.9995417652473568
+      }
+    },
+    {
+      "episode_id": 21,
+      "seed": 100036,
+      "task_name": "open_microwave",
+      "instruction": "Move the left arm and open the medium-sized microwave with angled walls.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 904.9626727104187,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004696243915083488,
+        "max_action_change": 1.0033121251723616,
+        "std_action_change": 0.031033781969899962,
+        "action_smoothness_score": 0.9990378310373615,
+        "mean_joint_acceleration": 0.004074528975527839,
+        "max_joint_acceleration": 1.0084860511797196,
+        "joint_smoothness_score": 0.9982751612957831,
+        "overall_smoothness": 0.9986564961665723
+      }
+    },
+    {
+      "episode_id": 22,
+      "seed": 100039,
+      "task_name": "open_microwave",
+      "instruction": "Use the left arm to pull the handle of the kitchen microwave with slanted shape.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 891.6132280826569,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004843320887149684,
+        "max_action_change": 0.9793628810191498,
+        "std_action_change": 0.02511269909138997,
+        "action_smoothness_score": 0.9993697498101499,
+        "mean_joint_acceleration": 0.0031242912835997717,
+        "max_joint_acceleration": 0.9817801370904142,
+        "joint_smoothness_score": 0.999024568935199,
+        "overall_smoothness": 0.9991971593726745
+      }
+    },
+    {
+      "episode_id": 23,
+      "seed": 100040,
+      "task_name": "open_microwave",
+      "instruction": "Locate the kitchen microwave with slanted shape and open it using the left arm.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 869.995988368988,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.0030462419250166252,
+        "max_action_change": 0.3418257276157535,
+        "std_action_change": 0.009705451703507353,
+        "action_smoothness_score": 0.9999058130792425,
+        "mean_joint_acceleration": 0.0018195208566857107,
+        "max_joint_acceleration": 0.3401142067575657,
+        "joint_smoothness_score": 0.9999729641353616,
+        "overall_smoothness": 0.999939388607302
       }
     }
   ]

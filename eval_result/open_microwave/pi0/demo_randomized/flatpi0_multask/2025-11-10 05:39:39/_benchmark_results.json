@@ -3,30 +3,30 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 31,
+    "total_episodes": 38,
     "success_metrics": {
-      "success_rate": 0.06451612903225806,
-      "success_count": 2,
-      "failure_count": 29
+      "success_rate": 0.07894736842105263,
+      "success_count": 3,
+      "failure_count": 35
     },
     "step_metrics": {
-      "mean_steps": 1437.8387096774193,
-      "std_steps": 236.71544054388065,
+      "mean_steps": 1439.6052631578948,
+      "std_steps": 220.8633227602995,
       "min_steps": 527,
       "max_steps": 1500,
-      "mean_steps_successful": 536.5
+      "mean_steps_successful": 735.0
     },
     "duration_metrics": {
-      "mean_duration": 554.6219767062895,
-      "std_duration": 106.64447335106577,
-      "total_duration": 17193.281277894974
+      "mean_duration": 561.2429592985856,
+      "std_duration": 106.80571479578867,
+      "total_duration": 21327.232453346252
     },
     "smoothness_metrics": {
-      "mean_overall_smoothness": 0.999559810392586,
-      "std_overall_smoothness": 3.99284948748857e-05,
-      "mean_action_smoothness": 0.9996009809034069,
-      "mean_joint_smoothness": 0.999518639881765,
-      "mean_action_change": 0.0048678895259366495
+      "mean_overall_smoothness": 0.9996501130885834,
+      "std_overall_smoothness": 0.00013180292211287137,
+      "mean_action_smoothness": 0.9996712513905104,
+      "mean_joint_smoothness": 0.9996289747866566,
+      "mean_action_change": 0.004488767983747005
     },
     "robustness_metrics": {
       "mean_planning_failures": 0.0,
@@ -747,6 +747,167 @@
         "max_joint_acceleration": 0.09864968061447144,
         "joint_smoothness_score": 0.9999909439508964,
         "overall_smoothness": 0.9999351809804662
+      }
+    },
+    {
+      "episode_id": 31,
+      "seed": 100048,
+      "task_name": "open_microwave",
+      "instruction": "Pull the medium gray microwave with top vents open with the left arm.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 691.2317814826965,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.003262118198181869,
+        "max_action_change": 0.9467671333993645,
+        "std_action_change": 0.011431387639912291,
+        "action_smoothness_score": 0.9998693404507747,
+        "mean_joint_acceleration": 0.0019517179171794144,
+        "max_joint_acceleration": 0.9460901416368767,
+        "joint_smoothness_score": 0.9998990773147637,
+        "overall_smoothness": 0.9998842088827692
+      }
+    },
+    {
+      "episode_id": 32,
+      "seed": 100049,
+      "task_name": "open_microwave",
+      "instruction": "Locate the dark gray microwave and open it using the left arm.",
+      "success": true,
+      "completion_steps": 1132,
+      "step_limit": 1500,
+      "step_utilization": 0.7546666666666667,
+      "duration_seconds": 400.8770990371704,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.0037305248993677155,
+        "max_action_change": 0.7644831127782418,
+        "std_action_change": 0.013720169972132008,
+        "action_smoothness_score": 0.9998117923647176,
+        "mean_joint_acceleration": 0.0019843046214779365,
+        "max_joint_acceleration": 0.7581773814517205,
+        "joint_smoothness_score": 0.9998496445964394,
+        "overall_smoothness": 0.9998307184805786
+      }
+    },
+    {
+      "episode_id": 33,
+      "seed": 100051,
+      "task_name": "open_microwave",
+      "instruction": "Use the left arm to pull the handle of the medium-sized microwave with angled walls.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 536.9978623390198,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.0037185025087191335,
+        "max_action_change": 0.9816847751587212,
+        "std_action_change": 0.012324566393170205,
+        "action_smoothness_score": 0.9998481281317882,
+        "mean_joint_acceleration": 0.0018675766452275774,
+        "max_joint_acceleration": 0.9790460819261794,
+        "joint_smoothness_score": 0.9998994929580194,
+        "overall_smoothness": 0.9998738105449039
+      }
+    },
+    {
+      "episode_id": 34,
+      "seed": 100054,
+      "task_name": "open_microwave",
+      "instruction": "Use the left arm to pull the handle of the medium-sized rectangular microwave with textured top.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 618.1772873401642,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004070715502790574,
+        "max_action_change": 0.9904967373307101,
+        "std_action_change": 0.01806051938836061,
+        "action_smoothness_score": 0.9996739239996622,
+        "mean_joint_acceleration": 0.0024845255788250014,
+        "max_joint_acceleration": 0.9960647038433261,
+        "joint_smoothness_score": 0.999551479954564,
+        "overall_smoothness": 0.999612701977113
+      }
+    },
+    {
+      "episode_id": 35,
+      "seed": 100055,
+      "task_name": "open_microwave",
+      "instruction": "Locate the medium gray microwave with top vents and open it using the left arm.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 667.3075003623962,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004110649805713225,
+        "max_action_change": 0.967823879410871,
+        "std_action_change": 0.0159420071076144,
+        "action_smoothness_score": 0.9997459169839671,
+        "mean_joint_acceleration": 0.002409513509627021,
+        "max_joint_acceleration": 0.9692189688945004,
+        "joint_smoothness_score": 0.9996952174195162,
+        "overall_smoothness": 0.9997205672017416
+      }
+    },
+    {
+      "episode_id": 36,
+      "seed": 100056,
+      "task_name": "open_microwave",
+      "instruction": "Pull the medium-sized rectangular microwave with textured top open with the left arm.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 517.0121338367462,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.003986653568410411,
+        "max_action_change": 0.9815493975935657,
+        "std_action_change": 0.020423759637692537,
+        "action_smoothness_score": 0.9995830439671142,
+        "mean_joint_acceleration": 0.002576922330898273,
+        "max_joint_acceleration": 0.9821760839882723,
+        "joint_smoothness_score": 0.9993734148648082,
+        "overall_smoothness": 0.9994782294159612
+      }
+    },
+    {
+      "episode_id": 37,
+      "seed": 100058,
+      "task_name": "open_microwave",
+      "instruction": "Use the left arm to open the medium-sized microwave with angled walls.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 702.3475110530853,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004138601202792024,
+        "max_action_change": 1.0033956468564513,
+        "std_action_change": 0.02517350516182518,
+        "action_smoothness_score": 0.9993666959660298,
+        "mean_joint_acceleration": 0.003252078035898449,
+        "max_joint_acceleration": 0.997153428396681,
+        "joint_smoothness_score": 0.9989333263120984,
+        "overall_smoothness": 0.9991500111390641
       }
     }
   ]

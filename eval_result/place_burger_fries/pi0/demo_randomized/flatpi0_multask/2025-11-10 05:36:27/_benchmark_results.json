@@ -3,30 +3,30 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 66,
+    "total_episodes": 81,
     "success_metrics": {
-      "success_rate": 0.3787878787878788,
-      "success_count": 25,
-      "failure_count": 41
+      "success_rate": 0.38271604938271603,
+      "success_count": 31,
+      "failure_count": 50
     },
     "step_metrics": {
-      "mean_steps": 392.8333333333333,
-      "std_steps": 137.25872311334922,
+      "mean_steps": 391.679012345679,
+      "std_steps": 137.58955127932776,
       "min_steps": 210,
       "max_steps": 500,
-      "mean_steps_successful": 217.08
+      "mean_steps_successful": 216.96774193548387
     },
     "duration_metrics": {
-      "mean_duration": 271.4673270998579,
-      "std_duration": 79.46064631800297,
-      "total_duration": 17916.843588590622
+      "mean_duration": 268.82808980824035,
+      "std_duration": 79.04717024343182,
+      "total_duration": 21775.07527446747
     },
     "smoothness_metrics": {
-      "mean_overall_smoothness": 0.9997923959812556,
-      "std_overall_smoothness": 9.675198320715786e-06,
-      "mean_action_smoothness": 0.999612129620591,
-      "mean_joint_smoothness": 0.9999726623419205,
-      "mean_action_change": 0.00991467100321358
+      "mean_overall_smoothness": 0.9997917403011038,
+      "std_overall_smoothness": 9.125172312977677e-06,
+      "mean_action_smoothness": 0.9996103683795579,
+      "mean_joint_smoothness": 0.9999731122226504,
+      "mean_action_change": 0.009961905052197132
     },
     "robustness_metrics": {
       "mean_planning_failures": 0.0,
@@ -1552,6 +1552,351 @@
         "max_joint_acceleration": 0.8513270512005667,
         "joint_smoothness_score": 0.9996554254829244,
         "overall_smoothness": 0.9996480014546476
+      }
+    },
+    {
+      "episode_id": 66,
+      "seed": 100092,
+      "task_name": "place_burger_fries",
+      "instruction": "Use both arms to grab the cardboard hamburg box and the hand-sized fries container and set them on the medium beige plastic tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 311.204514503479,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006149524947538425,
+        "max_action_change": 0.803261570724335,
+        "std_action_change": 0.017986585737849784,
+        "action_smoothness_score": 0.9996765873630672,
+        "mean_joint_acceleration": 0.002366164327310822,
+        "max_joint_acceleration": 0.8059491796668943,
+        "joint_smoothness_score": 0.9997927608075802,
+        "overall_smoothness": 0.9997346740853237
+      }
+    },
+    {
+      "episode_id": 67,
+      "seed": 100093,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick the small rectangular hamburg and the hand-sized fries container, place them on the medium green tray for carrying.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 286.0987226963043,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.010462526750954701,
+        "max_action_change": 1.011628421710337,
+        "std_action_change": 0.0373725652344423,
+        "action_smoothness_score": 0.9986052394419087,
+        "mean_joint_acceleration": 0.0059430280364073905,
+        "max_joint_acceleration": 1.065244433556316,
+        "joint_smoothness_score": 0.9977576971644032,
+        "overall_smoothness": 0.998181468303156
+      }
+    },
+    {
+      "episode_id": 68,
+      "seed": 100094,
+      "task_name": "place_burger_fries",
+      "instruction": "Place the hamburg with white and orange and the Golden fries in red carton box onto the smooth green tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 313.63843059539795,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.00917737024547548,
+        "max_action_change": 1.006816983517493,
+        "std_action_change": 0.032611300980226354,
+        "action_smoothness_score": 0.9989376328725785,
+        "mean_joint_acceleration": 0.005199031070320762,
+        "max_joint_acceleration": 0.9947767112142141,
+        "joint_smoothness_score": 0.998438337534039,
+        "overall_smoothness": 0.9986879852033088
+      }
+    },
+    {
+      "episode_id": 69,
+      "seed": 100095,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick the compact hamburg box and the hand-sized fries container, then place them on the rectangular beige tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 322.99131965637207,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.008680534644896744,
+        "max_action_change": 0.8446723346304743,
+        "std_action_change": 0.02326516886525422,
+        "action_smoothness_score": 0.9994590247303179,
+        "mean_joint_acceleration": 0.0038968161287081596,
+        "max_joint_acceleration": 0.8501591364167886,
+        "joint_smoothness_score": 0.9994207957808805,
+        "overall_smoothness": 0.9994399102555992
+      }
+    },
+    {
+      "episode_id": 70,
+      "seed": 100096,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick the small rectangular hamburg and the golden crispy fries inside red box, place them on the medium green tray for carrying.",
+      "success": true,
+      "completion_steps": 216,
+      "step_limit": 500,
+      "step_utilization": 0.432,
+      "duration_seconds": 166.152179479599,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.010091154619962845,
+        "max_action_change": 0.13068709892378316,
+        "std_action_change": 0.01999716744065905,
+        "action_smoothness_score": 0.9996002731398075,
+        "mean_joint_acceleration": 0.002697898245760889,
+        "max_joint_acceleration": 0.06730894091980444,
+        "joint_smoothness_score": 0.9999759069488202,
+        "overall_smoothness": 0.9997880900443139
+      }
+    },
+    {
+      "episode_id": 71,
+      "seed": 100097,
+      "task_name": "place_burger_fries",
+      "instruction": "Grab the stackable hamburg box and the golden fries in red holder, then set them on the green tray",
+      "success": true,
+      "completion_steps": 212,
+      "step_limit": 500,
+      "step_utilization": 0.424,
+      "duration_seconds": 165.77603816986084,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.01051881145642356,
+        "max_action_change": 0.11628928660036286,
+        "std_action_change": 0.020335615004659406,
+        "action_smoothness_score": 0.9995866337047381,
+        "mean_joint_acceleration": 0.002770763422607851,
+        "max_joint_acceleration": 0.07186453517083913,
+        "joint_smoothness_score": 0.9999758680093891,
+        "overall_smoothness": 0.9997812508570636
+      }
+    },
+    {
+      "episode_id": 72,
+      "seed": 100098,
+      "task_name": "place_burger_fries",
+      "instruction": "Grab the golden brown food within wrapper and the Crispy potato fries with red box, then set them on the medium beige plastic tray",
+      "success": true,
+      "completion_steps": 213,
+      "step_limit": 500,
+      "step_utilization": 0.426,
+      "duration_seconds": 170.6183159351349,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.010183795501692749,
+        "max_action_change": 0.12015650290863555,
+        "std_action_change": 0.019821650833811526,
+        "action_smoothness_score": 0.9996072564663092,
+        "mean_joint_acceleration": 0.0027163888630562325,
+        "max_joint_acceleration": 0.08597948690243917,
+        "joint_smoothness_score": 0.9999745766651212,
+        "overall_smoothness": 0.9997909165657153
+      }
+    },
+    {
+      "episode_id": 73,
+      "seed": 100099,
+      "task_name": "place_burger_fries",
+      "instruction": "Grab the cardboard hamburg container and the hand-sized fries container together, setting them on the medium beige plastic tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 322.242285490036,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005664835514731596,
+        "max_action_change": 0.7973668004498092,
+        "std_action_change": 0.01885234745629611,
+        "action_smoothness_score": 0.9996447152674908,
+        "mean_joint_acceleration": 0.0023860970138486846,
+        "max_joint_acceleration": 0.7953044109460361,
+        "joint_smoothness_score": 0.9996883266621832,
+        "overall_smoothness": 0.999666520964837
+      }
+    },
+    {
+      "episode_id": 74,
+      "seed": 100100,
+      "task_name": "place_burger_fries",
+      "instruction": "Use both arms to place the rectangular cardboard box for hamburg and the Golden fries in red carton box on the beige tray with soft edges.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 331.9496445655823,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.008739677629918778,
+        "max_action_change": 0.8552016442341357,
+        "std_action_change": 0.0248183548441267,
+        "action_smoothness_score": 0.9993844284245966,
+        "mean_joint_acceleration": 0.003867559599626665,
+        "max_joint_acceleration": 0.8554083393901545,
+        "joint_smoothness_score": 0.999313215424499,
+        "overall_smoothness": 0.9993488219245479
+      }
+    },
+    {
+      "episode_id": 75,
+      "seed": 100101,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick up the compact hamburg box and the Red carton box fries crispy golden, then place on the flat brown serving tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 331.2040801048279,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.008477786496435746,
+        "max_action_change": 0.7415247924841977,
+        "std_action_change": 0.024412137693594422,
+        "action_smoothness_score": 0.9994044024810397,
+        "mean_joint_acceleration": 0.004027962108348023,
+        "max_joint_acceleration": 0.7546905958908893,
+        "joint_smoothness_score": 0.9992837885765466,
+        "overall_smoothness": 0.9993440955287931
+      }
+    },
+    {
+      "episode_id": 76,
+      "seed": 100102,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick the compact hamburg box and the golden crispy fries inside red box, then place them on the rectangular bright orange serving tray.",
+      "success": true,
+      "completion_steps": 214,
+      "step_limit": 500,
+      "step_utilization": 0.428,
+      "duration_seconds": 161.41102075576782,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.010282457693670108,
+        "max_action_change": 0.11771431006618371,
+        "std_action_change": 0.020060044059162018,
+        "action_smoothness_score": 0.9995977564972891,
+        "mean_joint_acceleration": 0.0029136014209439403,
+        "max_joint_acceleration": 0.08420112978934058,
+        "joint_smoothness_score": 0.9999721428023888,
+        "overall_smoothness": 0.999784949649839
+      }
+    },
+    {
+      "episode_id": 77,
+      "seed": 100103,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick up the cardboard hamburg box and the Golden fries in red carton box, then place on the tray for carrying items.",
+      "success": true,
+      "completion_steps": 227,
+      "step_limit": 500,
+      "step_utilization": 0.454,
+      "duration_seconds": 172.47369837760925,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.009701528992727434,
+        "max_action_change": 0.11406911362874528,
+        "std_action_change": 0.019440653576345047,
+        "action_smoothness_score": 0.9996222037724573,
+        "mean_joint_acceleration": 0.0027306394045366156,
+        "max_joint_acceleration": 0.06650214964331003,
+        "joint_smoothness_score": 0.9999762125355975,
+        "overall_smoothness": 0.9997992081540275
+      }
+    },
+    {
+      "episode_id": 78,
+      "seed": 100106,
+      "task_name": "place_burger_fries",
+      "instruction": "Use both arms to grab the hamburg pack with printed details and the hand-sized fries container and set them on the beige tray with soft edges.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 332.4251985549927,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.004994374628034358,
+        "max_action_change": 0.7444351245084758,
+        "std_action_change": 0.01668643421683152,
+        "action_smoothness_score": 0.9997216404187582,
+        "mean_joint_acceleration": 0.0024453237053678116,
+        "max_joint_acceleration": 0.7453467533944482,
+        "joint_smoothness_score": 0.9997522036980753,
+        "overall_smoothness": 0.9997369220584167
+      }
+    },
+    {
+      "episode_id": 79,
+      "seed": 100107,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick up the rounded rectangular hamburg wrap and the Golden fries in red carton box, then place on the medium-sized tray with rounded corners.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 316.3180003166199,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005567806756426134,
+        "max_action_change": 0.8624923433298024,
+        "std_action_change": 0.01771035422668382,
+        "action_smoothness_score": 0.9996864417028094,
+        "mean_joint_acceleration": 0.0022747760620708147,
+        "max_joint_acceleration": 0.8632234480256065,
+        "joint_smoothness_score": 0.9997721741855927,
+        "overall_smoothness": 0.9997293079442011
+      }
+    },
+    {
+      "episode_id": 80,
+      "seed": 100108,
+      "task_name": "place_burger_fries",
+      "instruction": "Pick up the compact hamburg box and the Red carton box fries crispy golden and place them on the medium-sized tray with rounded corners.",
+      "success": true,
+      "completion_steps": 217,
+      "step_limit": 500,
+      "step_utilization": 0.434,
+      "duration_seconds": 153.72823667526245,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.010174533273294942,
+        "max_action_change": 0.11611410199136518,
+        "std_action_change": 0.019902290398052587,
+        "action_smoothness_score": 0.9996040556709208,
+        "mean_joint_acceleration": 0.0027253563146152513,
+        "max_joint_acceleration": 0.05982856391172353,
+        "joint_smoothness_score": 0.9999752133928336,
+        "overall_smoothness": 0.9997896345318772
       }
     }
   ]
