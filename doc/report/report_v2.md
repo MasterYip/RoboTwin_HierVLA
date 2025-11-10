@@ -1,8 +1,7 @@
 # Group003 项目报告：扁平化与分层VLA策略对比分析
 
-* **项目成员:**  叶雷 (镜像搭建以及任务实现)，李毅恒(分层策略以及任务实现), 王睿 (消融实验以及报告)
-* **项目周期:** 48小时
-* **项目代码:** [MasterYip/RoboTwin_HierVLA](https://github.com/MasterYip/RoboTwin_HierVLA)
+**项目成员:**  叶雷 (镜像搭建以及任务实现)，李毅恒(分层策略以及任务实现), C角 (消融实验以及报告)
+**项目周期:** 48小时
 
 ---
 
@@ -83,6 +82,7 @@ bash collect_data.sh blocks_ranking_rgb demo_randomized 1
 mkdir processed_data && mkdir training_data
 # bash process_data_pi0.sh ${task_name} ${task_config} ${expert_data_num}
 bash process_data_pi0.sh stack_blocks_three demo_randomized 50
+bash process_data_pi0.sh place_burger_fries demo_randomized 50
 
 # hdf5_path: The path to the generated HDF5 data (e.g., ./training_data/${model_name}/)
 # bash generate.sh ${hdf5_path} ${repo_id}
@@ -229,6 +229,13 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 
 为了系统性地评估不同VLA策略的性能，我们开发了一套自动化的基准测试框架。该框架不仅记录传统的成功率指标，还引入了多维度的定量评估体系，包括动作平滑度、执行效率、系统鲁棒性等关键指标。
 
+**设计目标 (Design Objectives):**
+
+1. **全面性 (Comprehensiveness)**: 覆盖任务成功率、执行效率、动作质量、系统鲁棒性四大维度
+2. **自动化 (Automation)**: 无需人工干预，自动记录所有关键指标
+3. **可追溯性 (Traceability)**: 保存每个episode的详细数据，支持事后分析
+4. **可视化友好 (Visualization-Ready)**: 输出JSON格式，便于生成图表和报告
+
 ### 5.2. 核心模块设计 (Core Module Design)
 
 基准测试系统由三个核心类组成，位于 `envs/utils/benchmark.py`：
@@ -265,6 +272,54 @@ class EpisodeBenchmark:
     planning_failures: int   # 规划失败次数
     collision_count: int     # 碰撞次数
 ```
+
+**核心方法**:
+
+* `record_step(action, joint_state)`: 在每个仿真步骤调用，自动记录动作和关节状态
+
+  ```python
+  def record_step(self, action: np.ndarray, joint_state: np.ndarray):
+      self.actions.append(action.copy())
+      self.joint_states.append(joint_state.copy())
+      self.completion_steps += 1
+      
+      # 计算动作速度（相邻步骤的动作差）
+      if len(self.actions) > 1:
+          action_diff = np.abs(self.actions[-1] - self.actions[-2])
+          self.action_velocities.append(action_diff)
+      
+      # 计算关节加速度（二阶导数）
+      if len(self.joint_states) > 2:
+          vel_curr = self.joint_states[-1] - self.joint_states[-2]
+          vel_prev = self.joint_states[-2] - self.joint_states[-3]
+          accel = np.abs(vel_curr - vel_prev)
+          self.joint_accelerations.append(accel)
+  ```
+
+* `compute_smoothness_metrics()`: 计算多种平滑度评分
+
+  ```python
+  def compute_smoothness_metrics(self) -> Dict[str, float]:
+      metrics = {}
+      
+      # 动作平滑度：基于动作变化的方差
+      action_vels = np.array(self.action_velocities)
+      variance = np.var(action_vels)
+      metrics['action_smoothness_score'] = 1.0 / (1.0 + variance)
+      
+      # 关节平滑度：基于关节加速度的方差
+      joint_accels = np.array(self.joint_accelerations)
+      jerk_variance = np.var(joint_accels)
+      metrics['joint_smoothness_score'] = 1.0 / (1.0 + jerk_variance)
+      
+      # 综合平滑度：两者的平均值
+      metrics['overall_smoothness'] = (
+          metrics['action_smoothness_score'] + 
+          metrics['joint_smoothness_score']
+      ) / 2.0
+      
+      return metrics
+  ```
 
 #### 2. PolicyBenchmark 类 (Policy-Level Aggregator)
 
