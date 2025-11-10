@@ -108,6 +108,7 @@ bash finetune.sh pi0_base_aloha_robotwin_full flatpi0_multask 0,1,2,3
 # ckpt_path like: policy/pi0/checkpoints/pi0_base_aloha_robotwin_full/demo_clean/30000
 bash eval.sh ${task_name} ${task_config} ${train_config_name} ${model_name} ${seed} ${gpu_id}
 bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full flatpi0 0 0
+bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full flatpi0_multask 0 2
 # bash eval.sh beat_block_hammer demo_clean pi0_base_aloha_robotwin_full demo_clean 0 0
 # This command trains the policy using the `demo_clean` setting ($model_name)
 # and evaluates it using the same `demo_clean` setting ($task_config).
