@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 19,
+    "total_episodes": 20,
     "success_metrics": {
-      "success_rate": 0.05263157894736842,
+      "success_rate": 0.05,
       "success_count": 1,
-      "failure_count": 18
+      "failure_count": 19
     },
     "step_metrics": {
-      "mean_steps": 1432.578947368421,
-      "std_steps": 286.0433010631476,
+      "mean_steps": 1435.95,
+      "std_steps": 279.1874773337802,
       "min_steps": 219,
       "max_steps": 1500,
       "mean_steps_successful": 219.0
     },
     "duration_metrics": {
-      "mean_duration": 891.3249123723883,
-      "std_duration": 190.7629865599752,
-      "total_duration": 16935.17333507538
+      "mean_duration": 889.9007895946503,
+      "std_duration": 186.0363555256138,
+      "total_duration": 17798.015791893005
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.9994721863120024,
@@ -471,6 +471,29 @@
         "max_joint_acceleration": 0.28028142350868945,
         "joint_smoothness_score": 0.9999767798070746,
         "overall_smoothness": 0.9999348275664004
+      }
+    },
+    {
+      "episode_id": 19,
+      "seed": 100029,
+      "task_name": "open_microwave",
+      "instruction": "Grab the medium-sized rectangular microwave with textured top's handle and pull to open it.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 862.842456817627,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.002242735137035373,
+        "max_action_change": 0.9780293730261016,
+        "std_action_change": 0.016029545192569647,
+        "action_smoothness_score": 0.9997431196853706,
+        "mean_joint_acceleration": 0.001981902910288572,
+        "max_joint_acceleration": 0.9787706756280828,
+        "joint_smoothness_score": 0.9995962039115225,
+        "overall_smoothness": 0.9996696617984465
       }
     }
   ]
