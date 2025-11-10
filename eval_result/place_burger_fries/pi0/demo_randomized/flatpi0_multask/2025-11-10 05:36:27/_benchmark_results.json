@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 65,
+    "total_episodes": 66,
     "success_metrics": {
-      "success_rate": 0.38461538461538464,
+      "success_rate": 0.3787878787878788,
       "success_count": 25,
-      "failure_count": 40
+      "failure_count": 41
     },
     "step_metrics": {
-      "mean_steps": 391.18461538461537,
-      "std_steps": 137.66043980167478,
+      "mean_steps": 392.8333333333333,
+      "std_steps": 137.25872311334922,
       "min_steps": 210,
       "max_steps": 500,
       "mean_steps_successful": 217.08
     },
     "duration_metrics": {
-      "mean_duration": 270.18061647415163,
-      "std_duration": 79.38426473716929,
-      "total_duration": 17561.740070819855
+      "mean_duration": 271.4673270998579,
+      "std_duration": 79.46064631800297,
+      "total_duration": 17916.843588590622
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.9997923959812556,
@@ -1529,6 +1529,29 @@
         "max_joint_acceleration": 0.06710267066955566,
         "joint_smoothness_score": 0.9999745776357776,
         "overall_smoothness": 0.9997792529815818
+      }
+    },
+    {
+      "episode_id": 65,
+      "seed": 100091,
+      "task_name": "place_burger_fries",
+      "instruction": "Place the hamburg pack with printed details and the hand-sized fries container onto the flat brown serving tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 355.1035177707672,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005716576714327884,
+        "max_action_change": 0.8481069780786199,
+        "std_action_change": 0.018961851298438838,
+        "action_smoothness_score": 0.9996405774263708,
+        "mean_joint_acceleration": 0.002571039376613834,
+        "max_joint_acceleration": 0.8513270512005667,
+        "joint_smoothness_score": 0.9996554254829244,
+        "overall_smoothness": 0.9996480014546476
       }
     }
   ]

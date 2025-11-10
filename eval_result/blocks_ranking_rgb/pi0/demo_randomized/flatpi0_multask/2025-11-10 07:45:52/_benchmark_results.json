@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 14,
+    "total_episodes": 15,
     "success_metrics": {
-      "success_rate": 0.07142857142857142,
+      "success_rate": 0.06666666666666667,
       "success_count": 1,
-      "failure_count": 13
+      "failure_count": 14
     },
     "step_metrics": {
-      "mean_steps": 1146.9285714285713,
-      "std_steps": 191.3517569764103,
+      "mean_steps": 1150.4666666666667,
+      "std_steps": 185.3367625582026,
       "min_steps": 457,
       "max_steps": 1200,
       "mean_steps_successful": 457.0
     },
     "duration_metrics": {
-      "mean_duration": 677.6461388213294,
-      "std_duration": 113.28733120841538,
-      "total_duration": 9487.045943498611
+      "mean_duration": 678.7304127216339,
+      "std_duration": 109.52112680502579,
+      "total_duration": 10180.956190824509
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.9998439888617165,
@@ -356,6 +356,29 @@
         "max_joint_acceleration": 0.7502645692644248,
         "joint_smoothness_score": 0.9999174400398092,
         "overall_smoothness": 0.9998434783001
+      }
+    },
+    {
+      "episode_id": 14,
+      "seed": 100017,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Arrange red block, green block, and blue block from left to right in a row.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 693.9102473258972,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005535201802176603,
+        "max_action_change": 0.9687167996889907,
+        "std_action_change": 0.020200323445194623,
+        "action_smoothness_score": 0.9995921133720991,
+        "mean_joint_acceleration": 0.002625373439926971,
+        "max_joint_acceleration": 0.9699029254268446,
+        "joint_smoothness_score": 0.999572831212904,
+        "overall_smoothness": 0.9995824722925015
       }
     }
   ]
