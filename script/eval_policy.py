@@ -322,9 +322,9 @@ def eval_policy(task_name,
         if TASK_ENV.eval_video_path is not None:
             TASK_ENV._del_eval_video_ffmpeg()
         
-        # Mark episode completion in benchmark (if not already marked by success)
-        if not TASK_ENV.eval_success:
-            benchmark.mark_episode_success(False)
+        # End episode tracking (for both success and failure)
+        if benchmark:
+            benchmark.end_episode(success=succ)
 
         if succ:
             TASK_ENV.suc += 1

@@ -177,12 +177,23 @@ class PolicyBenchmark:
         if self.current_episode:
             self.current_episode.record_step(action, joint_state)
     
+    def end_episode(self, success: bool):
+        """End the current episode and finalize tracking"""
+        if self.current_episode is None:
+            return
+        
+        # Mark success and finalize the episode
+        self.current_episode.mark_success(success)
+        
+        # Add to completed episodes
+        self.episodes.append(self.current_episode)
+        
+        # Clear current episode
+        self.current_episode = None
+    
     def mark_episode_success(self, success: bool):
-        """Mark current episode as complete"""
-        if self.current_episode:
-            self.current_episode.mark_success(success)
-            self.episodes.append(self.current_episode)
-            self.current_episode = None
+        """Deprecated: Use end_episode instead"""
+        self.end_episode(success)
     
     def record_planning_failure(self):
         """Record planning failure in current episode"""

@@ -1672,6 +1672,10 @@ class Base_Task(gym.Env):
                 self.get_obs() # update obs
                 if (self.eval_video_path is not None):
                     self.eval_video_ffmpeg.stdin.write(self.now_obs["observation"]["head_camera"]["rgb"].tobytes())
+                
+                # NOTE: Benchmark success marking is now handled in eval_policy.py
+                # after the episode loop completes, not here during take_action
+                
                 return
 
         self._update_render()
