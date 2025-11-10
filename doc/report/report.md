@@ -187,34 +187,72 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 graph TD
     A[任务开始<br/>Task Instruction] --> B[Phase 1: 初始规划<br/>Initial Planning]
     B --> C[Qwen3-VL<br/>High-Level Planner]
-    C --> D[生成高层计划<br/>3-6 High-Level Steps]
+    C --> D[生成固定高层计划<br/>3-6 High-Level Steps - Fixed]
     D --> E{执行循环<br/>Execution Loop}
     
-    E --> F[Phase 2: 运动指令生成<br/>Motion Command Generation]
-    F --> G[Qwen3-VL<br/>Progress-Aware Planning]
-    G --> H[当前观测 + 计划进度<br/>Observation + Progress]
-    H --> I[生成运动级指令<br/>Motion-Level Command]
+    E --> F[Phase 2: 双重任务<br/>Dual Tasks Every N Steps]
+    F --> G[Qwen3-VL<br/>Progress-Aware Planning + Evaluation]
+    G --> H[当前观测 + 计划进度<br/>Current Images + Progress Context]
+    H --> I[任务1: 生成运动级指令<br/>Task 1: Motion Command]
+    H --> J[任务2: 视觉完成度评估<br/>Task 2: Visual Completion Check]
     
-    I --> J[PI0 Executor<br/>Low-Level VLA]
-    J --> K[动作块输出<br/>Action Chunk: H×14]
-    K --> L[环境执行<br/>Environment Step]
+    I --> K[运动指令输出<br/>Motion-Level Command]
+    J --> L{当前子任务完成?<br/>SUBTASK_COMPLETE: YES/NO}
     
-    L --> M{步数计数器<br/>Step Counter}
-    M -->|每10步| N[重新生成运动指令<br/>Regenerate Command]
-    N --> G
-    M -->|子任务完成| O[手动推进子任务<br/>Advance Subtask]
-    O --> G
-    M -->|继续执行| E
+    L -->|YES - 基于视觉证据| M[自动推进至下一子任务<br/>Auto Advance to Next Subtask]
+    L -->|NO - 继续执行| N[保持当前子任务<br/>Stay on Current Subtask]
     
-    L --> P{任务完成?<br/>Task Done?}
-    P -->|否| E
-    P -->|是| Q[任务结束<br/>Task Complete]
+    M --> O[更新进度标记<br/>Update Progress Markers]
+    N --> O
+    O --> K
+    
+    K --> P[PI0 Executor<br/>Low-Level VLA]
+    P --> Q[动作块输出<br/>Action Chunk: 10×14]
+    Q --> R[环境执行<br/>Environment Step]
+    
+    R --> S{步数计数器<br/>Step Counter}
+    S -->|每10步| F
+    S -->|继续执行| E
+    
+    R --> T{整体任务完成?<br/>All Subtasks Done?}
+    T -->|否| E
+    T -->|是| U[任务结束<br/>Task Complete]
     
     style B fill:#e1f5ff
     style F fill:#fff4e1
-    style C fill:#ffe1e1
-    style J fill:#e1ffe1
+    style G fill:#ffe1e1
+    style J fill:#ffe6cc
+    style L fill:#d4edda
+    style M fill:#d1ecf1
+    style P fill:#e1ffe1
+    
+    classDef perceptionNode fill:#ffe6cc,stroke:#ff9900,stroke-width:3px
+    classDef autoAdvance fill:#d1ecf1,stroke:#0099cc,stroke-width:3px
+    class J perceptionNode
+    class M autoAdvance
 ```
+
+**关键改进说明 (Key Improvements):**
+
+1. **双重任务机制 (Dual-Task Mechanism)**: Phase 2现在明确显示VLM同时执行两个任务
+   - 任务1: 生成运动级指令 (Motion Command Generation)
+   - 任务2: 基于视觉的完成度评估 (Visual Completion Evaluation)
+
+2. **感知驱动判断 (Perception-Driven Decision)**: 
+   - 橙色高亮节点 `J` 表示视觉感知评估
+   - 绿色决策节点 `L` 根据VLM的视觉判断（YES/NO）决定是否推进
+
+3. **自动推进 (Automatic Advancement)**:
+   - 蓝色高亮节点 `M` 表示系统自动推进至下一子任务
+   - **移除**了旧版的"手动推进"节点，改为基于感知的自动化决策
+
+4. **固定计划 (Fixed Plan)**:
+   - 节点 `D` 强调初始计划在执行过程中保持不变
+   - 所有后续决策都参考这一固定计划的进度
+
+5. **视觉证据要求 (Visual Evidence Requirement)**:
+   - `YES`分支明确标注"基于视觉证据"
+   - 强调完成度判断必须有图像中的可见证据支持
 
 ### 3.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
 
