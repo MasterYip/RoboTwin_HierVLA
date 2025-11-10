@@ -129,11 +129,37 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ## 3. 基线 VLA 策略 (Baseline: Flat VLA)
 
+<p align="center">
+  <img src="../imgs/FlatVLA.svg" height="300">
+  <br>
+  <text>基线 VLA 策略</text>
+</p>
+
 我们选用`pi0_base`预训练模型，并在`RoboTwin`平台的`demo_randomized`环境下进行微调，作为扁平化VLA策略的基线实现。该模型直接将视觉、语言和状态输入映射为动作输出，适用于多种操作任务。
 
 ---
 
-## 4. 单次规划 VLM-VLA 策略 (VLM-VLA Strategies)
+## 4. 单次规划 VLM-VLA 策略 (Single-Stage VLM-VLA Strategies)
+
+<p align="center">
+  <img src="../imgs/SimVLA.svg" height="400">
+  <br>
+  <text>单次规划 VLM-VLA 策略</text>
+</p>
+
+单次规划策略是分层VLA的一种简化实现方案，采用"一次性规划+顺序执行"的工作模式。与传统扁平化VLA相比，该策略引入了显式的任务分解环节，但相较于完整的两阶段规划机制，其规划过程仅在任务开始时执行一次。
+
+**工作流程**
+
+在任务执行前，系统调用Qwen3-VL-8B视觉-语言模型，输入主任务指令（如"整理桌面物品"）和初始视觉观测，要求模型生成一个固定的子任务序列。例如，模型可能将任务分解为：1) 识别并定位目标物体；2) 左臂抓取盘子；3) 右臂抓取杯子；4) 双臂协同移动至目标位置；5) 释放物体并归位。生成的子任务列表按照预设的执行步数（如每个子任务50步）依次传递给底层PI0执行器。底层执行器将每个子任务的文本描述作为语言条件，结合当前视觉观测和关节状态，生成对应的关节动作序列。
+
+**技术特点**
+
+该策略的核心优势在于其简洁性和可预测性。由于规划过程仅执行一次，系统避免了重复调用VLM带来的推理开销，推理延迟相较于扁平化基线仅增加初始的一次VLM调用（约1-2秒）。在执行阶段，系统完全依赖预先生成的子任务序列和固定的步数分配策略，不进行任何动态调整。这种设计使得系统行为高度可重现，便于调试和性能分析。
+
+**局限性分析**
+
+单次规划策略存在明显的鲁棒性短板。首先，固定的子任务执行步数无法适应实际执行速度的差异——简单的抓取动作可能在20步内完成，而复杂的双臂协同操作可能需要80步以上。其次，由于缺乏执行过程中的反馈机制，系统无法感知子任务是否真正完成。若某个子任务因环境干扰未能按时完成，后续子任务仍会按照预定计划强制推进，导致任务失败。第三，初始规划基于任务开始时的单一观测，无法预见执行过程中的意外情况（如物体滑落、碰撞干扰等），缺乏应变能力。
 
 ---
 
@@ -153,7 +179,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 <p align="center">
   <img src="../imgs/HierVLA_sch.svg" height="600">
   <br>
-  <text>工作流程图示 (Workflow Diagram)</text>
+  <text>基于视觉反馈的 VLM-VLA 策略</text>
 </p>
 
 ### 4.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
