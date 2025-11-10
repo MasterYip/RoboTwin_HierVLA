@@ -7,11 +7,13 @@ sys.path.append(f"./policy")
 sys.path.append("./description/utils")
 from envs import CONFIGS_PATH
 from envs.utils.create_actor import UnStableError
+from envs.utils.benchmark import PolicyBenchmark
 
 import numpy as np
 from pathlib import Path
 from collections import deque
 import traceback
+import json
 
 import yaml
 from datetime import datetime
@@ -170,7 +172,8 @@ def main(usr_args):
                                    st_seed,
                                    test_num=test_num,
                                    video_size=video_size,
-                                   instruction_type=instruction_type)
+                                   instruction_type=instruction_type,
+                                   save_dir=save_dir)
     suc_nums.append(suc_num)
 
     topk_success_rate = sorted(suc_nums, reverse=True)[:topk]
@@ -193,7 +196,8 @@ def eval_policy(task_name,
                 st_seed,
                 test_num=100,
                 video_size=None,
-                instruction_type=None):
+                instruction_type=None,
+                save_dir=None):
     print(f"\033[34mTask Name: {args['task_name']}\033[0m")
     print(f"\033[34mPolicy Name: {args['policy_name']}\033[0m")
 
@@ -214,6 +218,13 @@ def eval_policy(task_name,
     clear_cache_freq = args["clear_cache_freq"]
 
     args["eval_mode"] = True
+    
+    # Initialize benchmark tracker
+    benchmark = PolicyBenchmark(
+        policy_name=args['policy_name'],
+        task_config=args['task_config'],
+        ckpt_setting=args['ckpt_setting']
+    )
 
     while succ_seed < test_num:
         render_freq = args["render_freq"]
@@ -258,6 +269,16 @@ def eval_policy(task_name,
         results = generate_episode_descriptions(args["task_name"], episode_info_list, test_num)
         instruction = np.random.choice(results[0][instruction_type])
         TASK_ENV.set_instruction(instruction=instruction)  # set language instruction
+        
+        # Start benchmark tracking for this episode
+        benchmark.start_episode(
+            episode_id=TASK_ENV.test_num,
+            seed=now_seed,
+            task_name=task_name,
+            instruction=instruction,
+            step_limit=TASK_ENV.step_lim
+        )
+        TASK_ENV.set_benchmark_tracker(benchmark)
 
         if TASK_ENV.eval_video_path is not None:
             ffmpeg = subprocess.Popen(
@@ -300,6 +321,10 @@ def eval_policy(task_name,
         # task_total_reward += TASK_ENV.episode_score
         if TASK_ENV.eval_video_path is not None:
             TASK_ENV._del_eval_video_ffmpeg()
+        
+        # Mark episode completion in benchmark (if not already marked by success)
+        if not TASK_ENV.eval_success:
+            benchmark.mark_episode_success(False)
 
         if succ:
             TASK_ENV.suc += 1
@@ -321,6 +346,26 @@ def eval_policy(task_name,
         )
         # TASK_ENV._take_picture()
         now_seed += 1
+    
+    # Save benchmark results to JSON
+    if save_dir:
+        benchmark_file = os.path.join(save_dir, "_benchmark_results.json")
+        benchmark_data = benchmark.to_dict()
+        with open(benchmark_file, "w") as f:
+            json.dump(benchmark_data, f, indent=2)
+        print(f"\n\033[96mBenchmark results saved to: {benchmark_file}\033[0m")
+        
+        # Print summary
+        agg = benchmark_data['aggregate_metrics']
+        print(f"\n{'='*60}")
+        print(f"Benchmark Summary")
+        print(f"{'='*60}")
+        print(f"Success Rate: {agg['success_metrics']['success_rate']*100:.1f}%")
+        print(f"Mean Steps: {agg['step_metrics']['mean_steps']:.1f} ± {agg['step_metrics']['std_steps']:.1f}")
+        print(f"Mean Duration: {agg['duration_metrics']['mean_duration']:.2f}s")
+        print(f"Overall Smoothness: {agg['smoothness_metrics']['mean_overall_smoothness']:.4f}")
+        print(f"Planning Failures: {agg['robustness_metrics']['total_planning_failures']}")
+        print(f"{'='*60}\n")
 
     return now_seed, TASK_ENV.suc
 

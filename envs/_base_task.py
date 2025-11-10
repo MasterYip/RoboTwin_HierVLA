@@ -116,6 +116,10 @@ class Base_Task(gym.Env):
         self.right_cnt = 0
 
         self.instruction = None  # for Eval
+        
+        # Benchmark tracking
+        self.benchmark_tracker = None  # Will be set from eval_policy if needed
+        self.benchmark_enabled = kwags.get("benchmark_enabled", False)
 
         self.create_table_and_wall(table_xy_bias=table_xy_bias, table_height=0.74)
         self.load_robot(**kwags)
@@ -563,6 +567,11 @@ class Base_Task(gym.Env):
 
     def set_instruction(self, instruction=None):
         self.instruction = instruction
+    
+    def set_benchmark_tracker(self, tracker):
+        """Set the benchmark tracker for this environment"""
+        self.benchmark_tracker = tracker
+        self.benchmark_enabled = tracker is not None
 
     def get_instruction(self, instruction=None):
         return self.instruction
@@ -1497,6 +1506,10 @@ class Base_Task(gym.Env):
         left_arm_dim = len(left_jointstate) - 1 if action_type == 'qpos' else 7
         right_arm_dim = len(right_jointstate) - 1 if action_type == 'qpos' else 7
         current_jointstate = np.array(left_jointstate + right_jointstate)
+        
+        # Benchmark tracking: record action and joint state
+        if self.benchmark_enabled and self.benchmark_tracker:
+            self.benchmark_tracker.record_step(action, current_jointstate)
 
         left_arm_actions, left_gripper_actions, left_current_qpos, left_path = (
             [],

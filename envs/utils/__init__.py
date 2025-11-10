@@ -1,5 +1,7 @@
-from .action import *
+from .utils import *
 from .create_actor import *
+from .benchmark import EpisodeBenchmark, PolicyBenchmark
+from .action import *
 from .rand_create_actor import *
 from .save_file import *
 from .rand_create_cluttered_actor import *
