@@ -5,7 +5,7 @@
 
 ---
 
-## I. 项目概览 (Project Overview)
+## 1. 项目概览 (Project Overview)
 
 ### 1.1. 项目背景与挑战
 
@@ -23,7 +23,7 @@
 
 ---
 
-## II. 镜像环境配置、代码管理及数采微调管线搭建
+## 2. 镜像环境配置、代码管理及数采微调管线搭建
 
 ### 2.1. 服务器镜像配置及一键部署 (Environment Setup)
 
@@ -128,11 +128,11 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ---
 
-## III. 基线 VLA 策略 (Baseline: Flat VLA)
+## 3. 基线 VLA 策略 (Baseline: Flat VLA)
 
 本部分由**叶雷**同学负责复现，作为后续所有分层策略的“控制组”和“底层执行器”基础。
 
-### 2.1. 模型与环境 (Model & Environment)
+### 3.1. 模型与环境 (Model & Environment)
 
 * **模型选型 (Model Selection)**: **π₀ (PI0)**。
   * *描述*: PI0 是一个为机器人操作设计的基础视觉-语言-动作模型。它通过一个多模态Transformer骨干网络，融合语言指令、多视角图像和关节状态，以自回归方式生成“动作块”(Action Chunk)。
@@ -143,7 +143,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
   * Image: `25fall-masteryip-hier-vla:v1.0_gpu`
     ![alt text](../imgs/docker_image.png)
 
-### 2.2. 任务类型 (Task Types)
+### 3.2. 任务类型 (Task Types)
 
 * **简单任务 (Simple Tasks)**:
   * [x] `blocks_ranking_rgb` (按大小排列方块)
@@ -153,7 +153,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
   * [ ] "整理混杂餐具并归位" (Organize and return utensils)
   * [ ] `beat_block_hammer` (双臂协同任务)
 
-### 2.3. 扁平化策略实现 (Flat VLA Implementation)
+### 3.3. 扁平化策略实现 (Flat VLA Implementation)
 
 * **架构**:
     1. **输入 (Input)**: 自然语言指令 (`prompt`) + 3路RGB图像 (`cam_high`, `cam_left_wrist`, `cam_right_wrist`) + 14维关节状态 (`state`)。
@@ -168,9 +168,9 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ---
 
-## III. 分层 VLA 策略实现 (Hierarchical VLA Strategies)
+## 4. 分层 VLA 策略实现 (Hierarchical VLA Strategies)
 
-### 3.1. 整体架构设计 (Architecture Design)
+### 4.1. 整体架构设计 (Architecture Design)
 
 分层VLA策略采用**两阶段规划执行框架**，将传统扁平化VLA的单一映射过程解耦为"高层规划"与"低层执行"两个独立模块。该架构的核心思想是：利用大型视觉-语言模型（VLM）的强大理解与推理能力进行任务分解，同时保留底层VLA模型在精细运动控制上的优势。
 
@@ -181,7 +181,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 该设计参考了Hi Robot等工作中的分层提示策略（Hierarchical Prompting），但在实现上进行了针对性改进，以解决传统分层方法中存在的计划一致性问题。
 
-### 3.2. 工作流程图示 (Workflow Diagram)
+### 4.2. 工作流程图示 (Workflow Diagram)
 
 ![alt text](../imgs/HierVLA_sch.svg)
 
@@ -207,7 +207,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
    * `YES`分支明确标注"基于视觉证据"
    * 强调完成度判断必须有图像中的可见证据支持
 
-### 3.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
+### 4.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
 
 本实现采用创新的两阶段规划机制，结合**基于感知的进度评估（Perception-Based Progress Evaluation）**，有效解决了传统分层方法中存在的计划漂移（Plan Drift）和进度判断不准确的问题：
 
@@ -267,7 +267,7 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 * **及时响应**：子任务提前完成时立即推进，提高效率
 * **异常处理**：长时间未完成时可检测到（始终返回NO），便于干预
 
-### 3.4. 代码实现细节 (Implementation Details)
+### 4.4. 代码实现细节 (Implementation Details)
 
 **核心模块组成：**
 
@@ -355,7 +355,7 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 
 这确保了即使VLM偶尔输出格式不规范，系统仍能稳定运行。
 
-### 3.5. 实现状态与技术指标 (Implementation Status & Metrics)
+### 4.5. 实现状态与技术指标 (Implementation Status & Metrics)
 
 * **高层规划器 (High-level planner)**: ✅ 已实现
   * *输入*: 主任务指令 + 当前RGB观测（3视角） + 关节状态（可选）
@@ -402,106 +402,9 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 
 ---
 
-## IV. 性能对比 (Performance Comparison)
+## 5. 性能基准测试系统 (Performance Benchmarking System)
 
-### 4.0. 实验1
-
-Base Model: finetuned pi0 (10000 episode on several tasks)
-VLA Framework:
-
-* Flat model
-* First plan steps and input all at once
-* Replan steps every 10 sim step, pass current step instruction
-
-[实验1 VLM-VLA实验数据](data/VLA_compare.csv)
-![alt text](../../imgs/exp1_vlacmp.png)
-
-### 4.1. 评估维度 (Evaluation Metrics)
-
-我们将根据 `05-evaluation-pipeline.md` 文档，从以下三个维度进行评估：
-
-#### 1. 任务成功率 (Task Success Rate)
-
-* **指标**: `success_rate`。
-* **测试用例 (Test Cases)**:
-  * Blocks Ranking Size: `___________`
-  * Stack Blocks Three: `___________`
-  * Complex Task 1 (Assemble tools): `___________`
-  * Complex Task 2 (Organize utensils): `___________`
-
-#### 2. 动作合理性 (Action Rationality / Quality)
-
-* **指标 1 (效率)**: `average_steps` (平均步数) 和 `completion_time` (平均完成时间)。
-* **指标 2 (平滑度)**: `action_smoothness`。
-* **结果**:
-  * 平均步数: `___________`
-  * 动作平滑度: `___________`
-
-#### 3. 策略泛化能力 (Generalization Capability)
-
-* **方法**: 跨域评估（Cross-Domain Evaluation）。
-* **测试**: 使用在 `demo_clean` (干净) 配置下训练的模型，在 `demo_randomized` (视觉/物理随机化) 或 `hard_randomized` (困难随机化) 配置下进行评估。
-* **指标**: 成功率下降幅度。
-* **结果**:
-  * *Clean -> Randomized 成功率*: `___________`
-
-### 4.2. 结果汇总表 (Results Summary)
-
-| 策略 (Strategy) | 成功率 (SR) (简单任务) | 成功率 (SR) (复杂任务) | 动作质量 (平滑度/效率) | 泛化能力 (SR in Randomized) |
-|:--- |:--- |:--- |:--- |:--- |
-| **Flat VLA (基线)** | `___________` | `___________` | `___________` | `___________` |
-| **Strategy 1 (外部)** | `___________` | `___________` | `___________` | `___________` |
-| **Strategy 2 (内部)** | `___________` | `___________` | `___________` | `___________` |
-
----
-
-## V. 消融与机制分析 (Ablation Studies & Analysis)
-
-### 5.1. 消融实验 (Ablation Experiments)
-
-* **实验 1: 规划器 vs 执行器 (Planner vs. Executor)**
-  * *目的*: 验证 `TaskDecompositionModule` (高层规划器) 的必要性。
-  * *设置*: 仅使用 `Strategy 1`，将其中的高层规划器替换为一个“扁平”的指令（即直接将原始复杂指令"整理餐桌"喂给`GraspController`）。
-  * *预期*: 任务失败，证明高层规划器对于理解复杂指令至关重要。
-  * *结果*: `___________`
-
-* **实验 2: 专用技能 vs 通用技能 (Specialized vs. General Skills)**
-  * *目的*: 验证 `SkillController` 模块化的优势。
-  * *设置*: 在 `Strategy 2` 中，将所有专用的 `SkillController` (Reach, Grasp, Place) 替换为同一个 `Flat VLA` (PI0基线) 来执行所有子任务。
-  * *预期*: 成功率下降，或样本效率降低。证明专用技能控制器在学习效率和鲁棒性上的优势。
-  * *结果*: `___________`
-
-### 5.2. 洞察与改进 (Insights & Improvements)
-
-* **优势与权衡 (Strengths & Weaknesses)**:
-  * **Flat VLA**:
-    * *优势*: 结构简单，端到端。
-    * *劣势*: 可解释性差，难以调试，泛化能力弱，样本效率低。
-  * **Hierarchical (分层策略)**:
-    * *优势*: **可解释性强** (显式的子目标)；**样本效率高** (模块化学习，预期2-3倍提升)；**泛化性强** (技能可组合、可复用)；**易于调试**。
-    * *权衡 (Trade-off)*: 增加了**推理开销** (约 20ms) 和 **GPU显存占用** (约 1GB)。
-
-* **未来改进路径 (Optimization Paths)**:
-  * **Phase 2**: 扩展技能库（`SkillController`），支持工具使用、双臂协同；实现动态重规划（Dynamic Re-planning）。
-  * **Phase 3**: 实现技能的在线学习（Online Adaptation）和从演示中学习（Learning from Demonstrations）。
-
----
-
-## VI. 时间线与里程碑 (Timeline & Milestones)
-
-* [x] 环境搭建与数据收集脚本分析 (`T=0-2h`)
-* [ ] 基线 Flat VLA 训练与评估 (`T=2-12h`)
-* [ ] 分层策略 1 (外部) 实现与调试 (`T=6-24h`)
-* [ ] 分层策略 2 (内部) 数据准备与实现 (`T=6-30h`)
-* [ ] 性能评估与数据汇总 (`T=30-40h`)
-* [ ] 消融实验 (`T=40-44h`)
-* [ ] 最终分析与报告撰写 (`T=44-48h`)
-
----
-
-## VII. 性能基准测试系统 (Performance Benchmarking System)
-
-### 7.1. 基准测试框架概述 (Benchmark Framework Overview)
+### 5.1. 基准测试框架概述 (Benchmark Framework Overview)
 
 为了系统性地评估不同VLA策略的性能，我们开发了一套自动化的基准测试框架。该框架不仅记录传统的成功率指标，还引入了多维度的定量评估体系，包括动作平滑度、执行效率、系统鲁棒性等关键指标。
 
@@ -512,7 +415,7 @@ VLA Framework:
 3. **可追溯性 (Traceability)**: 保存每个episode的详细数据，支持事后分析
 4. **可视化友好 (Visualization-Ready)**: 输出JSON格式，便于生成图表和报告
 
-### 7.2. 核心模块设计 (Core Module Design)
+### 5.2. 核心模块设计 (Core Module Design)
 
 基准测试系统由三个核心类组成，位于 `envs/utils/benchmark.py`：
 
@@ -672,7 +575,7 @@ def take_action(self, action, action_type='qpos'):
 
 **修改点 4**: `script/eval_policy.py` - 评估流程集成
 
-### 7.3. 平滑度评估算法 (Smoothness Evaluation Algorithm)
+### 5.3. 平滑度评估算法 (Smoothness Evaluation Algorithm)
 
 平滑度是评估机器人动作质量的关键指标。我们采用多层次的平滑度计算方法：
 
@@ -718,7 +621,7 @@ $$
 * 分数 0.6-0.8: 运动较平滑，可接受
 * 分数 < 0.6: 运动抖动明显，需要优化
 
-### 7.6. 关键优势 (Key Advantages)
+### 5.4. 关键优势 (Key Advantages)
 
 1. **零侵入性 (Non-Invasive)**: 通过环境接口注入，无需修改策略代码
 2. **细粒度追踪 (Fine-Grained)**: 记录每一步的动作和状态，支持深度分析
@@ -726,7 +629,7 @@ $$
 4. **标准化输出 (Standardized)**: JSON格式，兼容各种可视化工具
 5. **可扩展性 (Extensible)**: 易于添加新的评估指标（如能量消耗、安全性等）
 
-### 7.7. 未来扩展方向 (Future Extensions)
+### 5.5. 未来扩展方向 (Future Extensions)
 
 * **能量效率 (Energy Efficiency)**: 基于关节速度和负载计算能量消耗
 * **安全性指标 (Safety Metrics)**: 跟踪与环境的最小距离、碰撞力度
@@ -735,19 +638,117 @@ $$
 
 ---
 
-## VIII. 备注与问题记录 (Notes & Issues)
+## 6. 性能对比 (Performance Comparison)
 
-### 8.1. 技术问题 (Technical Issues)
+### 6.1. 实验1
+
+Base Model: finetuned pi0 (10000 episode on several tasks)
+VLA Framework:
+
+* Flat model
+* First plan steps and input all at once
+* Replan steps every 10 sim step, pass current step instruction
+
+[实验1 VLM-VLA实验数据](data/VLA_compare.csv)
+![alt text](../imgs/exp1_vlacmp.png)
+
+
+### 6.2. 评估维度 (Evaluation Metrics)
+
+我们将根据 `05-evaluation-pipeline.md` 文档，从以下三个维度进行评估：
+
+#### 1. 任务成功率 (Task Success Rate)
+
+* **指标**: `success_rate`。
+* **测试用例 (Test Cases)**:
+  * Blocks Ranking Size: `___________`
+  * Stack Blocks Three: `___________`
+  * Complex Task 1 (Assemble tools): `___________`
+  * Complex Task 2 (Organize utensils): `___________`
+
+#### 2. 动作合理性 (Action Rationality / Quality)
+
+* **指标 1 (效率)**: `average_steps` (平均步数) 和 `completion_time` (平均完成时间)。
+* **指标 2 (平滑度)**: `action_smoothness`。
+* **结果**:
+  * 平均步数: `___________`
+  * 动作平滑度: `___________`
+
+#### 3. 策略泛化能力 (Generalization Capability)
+
+* **方法**: 跨域评估（Cross-Domain Evaluation）。
+* **测试**: 使用在 `demo_clean` (干净) 配置下训练的模型，在 `demo_randomized` (视觉/物理随机化) 或 `hard_randomized` (困难随机化) 配置下进行评估。
+* **指标**: 成功率下降幅度。
+* **结果**:
+  * *Clean -> Randomized 成功率*: `___________`
+
+### 6.3. 结果汇总表 (Results Summary)
+
+| 策略 (Strategy) | 成功率 (SR) (简单任务) | 成功率 (SR) (复杂任务) | 动作质量 (平滑度/效率) | 泛化能力 (SR in Randomized) |
+|:--- |:--- |:--- |:--- |:--- |
+| **Flat VLA (基线)** | `___________` | `___________` | `___________` | `___________` |
+| **Strategy 1 (外部)** | `___________` | `___________` | `___________` | `___________` |
+| **Strategy 2 (内部)** | `___________` | `___________` | `___________` | `___________` |
+
+---
+
+## 7. 消融与机制分析 (Ablation Studies & Analysis)
+
+### 7.1. 消融实验 (Ablation Experiments)
+
+* **实验 1: 规划器 vs 执行器 (Planner vs. Executor)**
+  * *目的*: 验证 `TaskDecompositionModule` (高层规划器) 的必要性。
+  * *设置*: 仅使用 `Strategy 1`，将其中的高层规划器替换为一个“扁平”的指令（即直接将原始复杂指令"整理餐桌"喂给`GraspController`）。
+  * *预期*: 任务失败，证明高层规划器对于理解复杂指令至关重要。
+  * *结果*: `___________`
+
+* **实验 2: 专用技能 vs 通用技能 (Specialized vs. General Skills)**
+  * *目的*: 验证 `SkillController` 模块化的优势。
+  * *设置*: 在 `Strategy 2` 中，将所有专用的 `SkillController` (Reach, Grasp, Place) 替换为同一个 `Flat VLA` (PI0基线) 来执行所有子任务。
+  * *预期*: 成功率下降，或样本效率降低。证明专用技能控制器在学习效率和鲁棒性上的优势。
+  * *结果*: `___________`
+
+### 7.2. 洞察与改进 (Insights & Improvements)
+
+* **优势与权衡 (Strengths & Weaknesses)**:
+  * **Flat VLA**:
+    * *优势*: 结构简单，端到端。
+    * *劣势*: 可解释性差，难以调试，泛化能力弱，样本效率低。
+  * **Hierarchical (分层策略)**:
+    * *优势*: **可解释性强** (显式的子目标)；**样本效率高** (模块化学习，预期2-3倍提升)；**泛化性强** (技能可组合、可复用)；**易于调试**。
+    * *权衡 (Trade-off)*: 增加了**推理开销** (约 20ms) 和 **GPU显存占用** (约 1GB)。
+
+* **未来改进路径 (Optimization Paths)**:
+  * **Phase 2**: 扩展技能库（`SkillController`），支持工具使用、双臂协同；实现动态重规划（Dynamic Re-planning）。
+  * **Phase 3**: 实现技能的在线学习（Online Adaptation）和从演示中学习（Learning from Demonstrations）。
+
+---
+
+## 8. 时间线与里程碑 (Timeline & Milestones)
+
+* [x] 环境搭建与数据收集脚本分析 (`T=0-2h`)
+* [ ] 基线 Flat VLA 训练与评估 (`T=2-12h`)
+* [ ] 分层策略 1 (外部) 实现与调试 (`T=6-24h`)
+* [ ] 分层策略 2 (内部) 数据准备与实现 (`T=6-30h`)
+* [ ] 性能评估与数据汇总 (`T=30-40h`)
+* [ ] 消融实验 (`T=40-44h`)
+* [ ] 最终分析与报告撰写 (`T=44-48h`)
+
+---
+
+## 9. 备注与问题记录 (Notes & Issues)
+
+### 9.1. 技术问题 (Technical Issues)
 
 1. **GPU 内存占用 (OOM)**: `Flat PI0` 基线模型推理需要约 4GB 显存。`HierarchicalPI0` (策略2) 因为需要加载多个技能控制器，预计需要 5GB 显存。
 2. **推理延迟 (Inference Latency)**: `Flat PI0` 推理时间约 100ms (`PI0-Base`)。`Strategy 1` (外部) 增加了LLM规划开销，`Strategy 2` (内部) 增加了子任务选择开销，总延迟预计为 120ms。
 
-### 8.2. 解决方案 (Solutions & Workarounds)
+### 9.2. 解决方案 (Solutions & Workarounds)
 
 1. **内存管理**: 严格遵守 `eval.sh` 中的 `XLA_PYTHON_CLIENT_MEM_FRACTION=0.4` 设置，限制JAX/TensorFlow仅使用 40% 的显存，防止OOM。
 2. **延迟优化**: 如果延迟成为瓶颈，可考虑将模型从 `PI0-Base` (100ms) 切换为 `PI0-FAST` (50ms)，以抵消分层带来的开销。
 
-### 8.3. 参考资料 (References)
+### 9.3. 参考资料 (References)
 
 * [1] RoboTwin2 Official Doc: <https://robotwin-platform.github.io/doc/usage/index.html>
 * [2] DeepWiki: <https://deepwiki.com/RoboTwin-Platform/RoboTwin>
