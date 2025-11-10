@@ -35,19 +35,19 @@
 * 数据采集与处理脚本
 此镜像可一键部署，方便团队成员快速搭建环境。
 
-![alt text](imgs/docker_images.png)
+![alt text](../imgs/docker_images.png)
 
 ### 2.2. 代码管理与协作 (Code Management)
 
 基于`RoboTwin`开源代码仓库，创建`RoboTwin_HierVLA`新仓库，进行代码版本控制与协作开发。
 
-![alt text](imgs/git_vcs.png)
+![alt text](../imgs/git_vcs.png)
 
 ### 2.3. Xmind思维导图工作流 (Xmind Workflow)
 
 基于Xmind思维导图，规划项目工作流与任务分配，确保各成员明确职责与时间节点。
 
-![alt text](imgs/task_assign.png) ![alt text](imgs/task_decompose.png)
+![alt text](../imgs/task_assign.png) ![alt text](../imgs/task_decompose.png)
 
 ### 2.4. 数据采集与微调管线搭建 (Data Collection & Fine-tuning Pipeline)
 
@@ -141,7 +141,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
   * *观测空间*: 多模态输入，包括3个RGB摄像头（Head, Left, Right）和14维的关节状态向量。
 * **Docker 镜像 (Image)**: `25fall-masteryip-hier-vla:v1.0_gpu`
   * Image: `25fall-masteryip-hier-vla:v1.0_gpu`
-    ![alt text](imgs/docker_image.png)
+    ![alt text](../imgs/docker_image.png)
 
 ### 2.2. 任务类型 (Task Types)
 
@@ -461,7 +461,7 @@ VLA Framework:
 * Replan steps every 10 sim step, pass current step instruction
 
 [实验1 VLM-VLA实验数据](data/VLA_compare.csv)
-![alt text](../imgs/exp1_vlacmp.png)
+![alt text](../../imgs/exp1_vlacmp.png)
 
 ### 4.1. 评估维度 (Evaluation Metrics)
 
