@@ -1,4 +1,3 @@
-from .utils import *
 from .create_actor import *
 from .benchmark import EpisodeBenchmark, PolicyBenchmark
 from .action import *

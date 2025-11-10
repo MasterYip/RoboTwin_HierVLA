@@ -119,7 +119,7 @@ class Base_Task(gym.Env):
         
         # Benchmark tracking
         self.benchmark_tracker = None  # Will be set from eval_policy if needed
-        self.benchmark_enabled = kwags.get("benchmark_enabled", False)
+        self.benchmark_enabled = kwags.get("benchmark_enabled", True)
 
         self.create_table_and_wall(table_xy_bias=table_xy_bias, table_height=0.74)
         self.load_robot(**kwags)
