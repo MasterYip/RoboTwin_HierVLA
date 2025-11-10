@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 13,
+    "total_episodes": 14,
     "success_metrics": {
-      "success_rate": 0.07692307692307693,
+      "success_rate": 0.07142857142857142,
       "success_count": 1,
-      "failure_count": 12
+      "failure_count": 13
     },
     "step_metrics": {
-      "mean_steps": 1142.8461538461538,
-      "std_steps": 197.9867307728732,
+      "mean_steps": 1146.9285714285713,
+      "std_steps": 191.3517569764103,
       "min_steps": 457,
       "max_steps": 1200,
       "mean_steps_successful": 457.0
     },
     "duration_metrics": {
-      "mean_duration": 673.5780035715836,
-      "std_duration": 116.57424901353055,
-      "total_duration": 8756.514046430588
+      "mean_duration": 677.6461388213294,
+      "std_duration": 113.28733120841538,
+      "total_duration": 9487.045943498611
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.9998439888617165,
@@ -333,6 +333,29 @@
         "max_joint_acceleration": 1.0032276381144571,
         "joint_smoothness_score": 0.9984879875344357,
         "overall_smoothness": 0.9988061690216739
+      }
+    },
+    {
+      "episode_id": 13,
+      "seed": 100015,
+      "task_name": "blocks_ranking_rgb",
+      "instruction": "Start by placing red block to the left, followed by green block next to red block, and end with blue block on the far right.",
+      "success": false,
+      "completion_steps": 1200,
+      "step_limit": 1200,
+      "step_utilization": 1.0,
+      "duration_seconds": 730.5318970680237,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005399916440591004,
+        "max_action_change": 0.7507854431378609,
+        "std_action_change": 0.015183430918991834,
+        "action_smoothness_score": 0.9997695165603909,
+        "mean_joint_acceleration": 0.0021521520278883458,
+        "max_joint_acceleration": 0.7502645692644248,
+        "joint_smoothness_score": 0.9999174400398092,
+        "overall_smoothness": 0.9998434783001
       }
     }
   ]

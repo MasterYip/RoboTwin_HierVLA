@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 30,
+    "total_episodes": 31,
     "success_metrics": {
-      "success_rate": 0.06666666666666667,
+      "success_rate": 0.06451612903225806,
       "success_count": 2,
-      "failure_count": 28
+      "failure_count": 29
     },
     "step_metrics": {
-      "mean_steps": 1435.7666666666667,
-      "std_steps": 240.3516428531792,
+      "mean_steps": 1437.8387096774193,
+      "std_steps": 236.71544054388065,
       "min_steps": 527,
       "max_steps": 1500,
       "mean_steps_successful": 536.5
     },
     "duration_metrics": {
-      "mean_duration": 555.9742699464163,
-      "std_duration": 108.14552947599968,
-      "total_duration": 16679.228098392487
+      "mean_duration": 554.6219767062895,
+      "std_duration": 106.64447335106577,
+      "total_duration": 17193.281277894974
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.999559810392586,
@@ -724,6 +724,29 @@
         "max_joint_acceleration": 1.0049477337512438,
         "joint_smoothness_score": 0.9975856818908471,
         "overall_smoothness": 0.9981176113836954
+      }
+    },
+    {
+      "episode_id": 30,
+      "seed": 100046,
+      "task_name": "open_microwave",
+      "instruction": "Move the left arm and open the gray and yellow rectangular microwave.",
+      "success": false,
+      "completion_steps": 1500,
+      "step_limit": 1500,
+      "step_utilization": 1.0,
+      "duration_seconds": 514.0531795024872,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.003824947255631454,
+        "max_action_change": 0.1306279803277859,
+        "std_action_change": 0.010981645219812881,
+        "action_smoothness_score": 0.9998794180100359,
+        "mean_joint_acceleration": 0.00174488025622655,
+        "max_joint_acceleration": 0.09864968061447144,
+        "joint_smoothness_score": 0.9999909439508964,
+        "overall_smoothness": 0.9999351809804662
       }
     }
   ]

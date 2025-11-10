@@ -3,23 +3,23 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 99,
+    "total_episodes": 100,
     "success_metrics": {
-      "success_rate": 0.36363636363636365,
+      "success_rate": 0.36,
       "success_count": 36,
-      "failure_count": 63
+      "failure_count": 64
     },
     "step_metrics": {
-      "mean_steps": 397.25252525252523,
-      "std_steps": 135.95590071073613,
+      "mean_steps": 398.28,
+      "std_steps": 135.66016954139488,
       "min_steps": 209,
       "max_steps": 500,
       "mean_steps_successful": 217.44444444444446
     },
     "duration_metrics": {
-      "mean_duration": 169.90998343506246,
-      "std_duration": 47.993860393653186,
-      "total_duration": 16821.088360071182
+      "mean_duration": 170.23755566596984,
+      "std_duration": 47.86438741079135,
+      "total_duration": 17023.755566596985
     },
     "smoothness_metrics": {
       "mean_overall_smoothness": 0.999796566117429,
@@ -2311,6 +2311,29 @@
         "max_joint_acceleration": 0.7496120041747071,
         "joint_smoothness_score": 0.9992685848024266,
         "overall_smoothness": 0.9993112148754411
+      }
+    },
+    {
+      "episode_id": 99,
+      "seed": 100137,
+      "task_name": "place_burger_fries",
+      "instruction": "Grab the hamburg with white and orange and the Golden fries in red carton box together, setting them on the green tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 202.6672065258026,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.006346085715035935,
+        "max_action_change": 0.5410350230063586,
+        "std_action_change": 0.01599276303449495,
+        "action_smoothness_score": 0.9997442969313051,
+        "mean_joint_acceleration": 0.002710599520140103,
+        "max_joint_acceleration": 0.5402554457108124,
+        "joint_smoothness_score": 0.9998778289969691,
+        "overall_smoothness": 0.999811062964137
       }
     }
   ]

@@ -3,30 +3,30 @@
     "policy_name": "pi0",
     "task_config": "demo_randomized",
     "ckpt_setting": "flatpi0_multask",
-    "total_episodes": 63,
+    "total_episodes": 65,
     "success_metrics": {
-      "success_rate": 0.38095238095238093,
-      "success_count": 24,
-      "failure_count": 39
+      "success_rate": 0.38461538461538464,
+      "success_count": 25,
+      "failure_count": 40
     },
     "step_metrics": {
-      "mean_steps": 392.25396825396825,
-      "std_steps": 137.36880820761291,
+      "mean_steps": 391.18461538461537,
+      "std_steps": 137.66043980167478,
       "min_steps": 210,
       "max_steps": 500,
-      "mean_steps_successful": 217.16666666666666
+      "mean_steps_successful": 217.08
     },
     "duration_metrics": {
-      "mean_duration": 270.6054072115156,
-      "std_duration": 79.0615148066175,
-      "total_duration": 17048.140654325485
+      "mean_duration": 270.18061647415163,
+      "std_duration": 79.38426473716929,
+      "total_duration": 17561.740070819855
     },
     "smoothness_metrics": {
-      "mean_overall_smoothness": 0.9997929436062419,
-      "std_overall_smoothness": 9.487493276643327e-06,
-      "mean_action_smoothness": 0.9996133046744745,
-      "mean_joint_smoothness": 0.9999725825380098,
-      "mean_action_change": 0.009894898887172836
+      "mean_overall_smoothness": 0.9997923959812556,
+      "std_overall_smoothness": 9.675198320715786e-06,
+      "mean_action_smoothness": 0.999612129620591,
+      "mean_joint_smoothness": 0.9999726623419205,
+      "mean_action_change": 0.00991467100321358
     },
     "robustness_metrics": {
       "mean_planning_failures": 0.0,
@@ -1483,6 +1483,52 @@
         "max_joint_acceleration": 0.10259722044931247,
         "joint_smoothness_score": 0.9999727298634353,
         "overall_smoothness": 0.9997976204922636
+      }
+    },
+    {
+      "episode_id": 63,
+      "seed": 100089,
+      "task_name": "place_burger_fries",
+      "instruction": "Use both arms to place the hamburg pack with printed details and the golden crispy fries inside red box on the flat brown serving tray.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 344.70867919921875,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.007514367507066016,
+        "max_action_change": 0.8177727333317371,
+        "std_action_change": 0.02365710623653462,
+        "action_smoothness_score": 0.9994406543671492,
+        "mean_joint_acceleration": 0.0037552710947490672,
+        "max_joint_acceleration": 0.816631696278967,
+        "joint_smoothness_score": 0.9993561782943827,
+        "overall_smoothness": 0.999398416330766
+      }
+    },
+    {
+      "episode_id": 64,
+      "seed": 100090,
+      "task_name": "place_burger_fries",
+      "instruction": "Place the compact hamburg box and the Crispy potato fries with red box onto the smooth green tray.",
+      "success": true,
+      "completion_steps": 215,
+      "step_limit": 500,
+      "step_utilization": 0.43,
+      "duration_seconds": 168.89073729515076,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.01038920178819144,
+        "max_action_change": 0.11432403460619756,
+        "std_action_change": 0.020402079803523196,
+        "action_smoothness_score": 0.999583928327386,
+        "mean_joint_acceleration": 0.002610835359304271,
+        "max_joint_acceleration": 0.06710267066955566,
+        "joint_smoothness_score": 0.9999745776357776,
+        "overall_smoothness": 0.9997792529815818
       }
     }
   ]
