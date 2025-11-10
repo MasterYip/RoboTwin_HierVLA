@@ -693,6 +693,7 @@ VLA Framework:
 
 ## 7. 消融与机制分析 (Ablation Studies & Analysis)
 
+
 ### 7.1. 消融实验 (Ablation Experiments)
 
 * **实验 1: 规划器 vs 执行器 (Planner vs. Executor)**
@@ -720,6 +721,8 @@ VLA Framework:
 * **未来改进路径 (Optimization Paths)**:
   * **Phase 2**: 扩展技能库（`SkillController`），支持工具使用、双臂协同；实现动态重规划（Dynamic Re-planning）。
   * **Phase 3**: 实现技能的在线学习（Online Adaptation）和从演示中学习（Learning from Demonstrations）。
+
+### 7.3.
 
 ---
 
