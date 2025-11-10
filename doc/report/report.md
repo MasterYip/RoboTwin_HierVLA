@@ -2,7 +2,7 @@
 
 * **项目成员:**  叶雷 (镜像搭建以及任务实现)，李毅恒(分层策略以及任务实现), 王睿 (消融实验以及报告)
 * **项目周期:** 48小时
-* **项目代码:** [MasterYip/RoboTwin_HierVLA](https://github.com/MasterYip/RoboTwin_HierVLA)
+* **项目代码:** [MasterYip/RoboTwin_HierVLA](https://github.com/MasterYip/RoboTwin_HierVLA) (包含代码更改记录、原始数据等)
 
 ---
 
