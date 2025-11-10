@@ -1,0 +1,63 @@
+{
+  "aggregate_metrics": {
+    "policy_name": "pi0",
+    "task_config": "demo_randomized",
+    "ckpt_setting": "flatpi0_multask",
+    "total_episodes": 1,
+    "success_metrics": {
+      "success_rate": 1.0,
+      "success_count": 1,
+      "failure_count": 0
+    },
+    "step_metrics": {
+      "mean_steps": 543.0,
+      "std_steps": 0.0,
+      "min_steps": 543,
+      "max_steps": 543,
+      "mean_steps_successful": 543.0
+    },
+    "duration_metrics": {
+      "mean_duration": 345.8528633117676,
+      "std_duration": 0.0,
+      "total_duration": 345.8528633117676
+    },
+    "smoothness_metrics": {
+      "mean_overall_smoothness": 0.999269447394405,
+      "std_overall_smoothness": 0.0,
+      "mean_action_smoothness": 0.9994140080004268,
+      "mean_joint_smoothness": 0.9991248867883833,
+      "mean_action_change": 0.005719150767266264
+    },
+    "robustness_metrics": {
+      "mean_planning_failures": 0.0,
+      "total_planning_failures": 0,
+      "mean_collisions": 0.0,
+      "total_collisions": 0
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": 0,
+      "seed": 100000,
+      "task_name": "open_microwave",
+      "instruction": "Pull the gray and yellow rectangular microwave open with the left arm.",
+      "success": true,
+      "completion_steps": 543,
+      "step_limit": 1500,
+      "step_utilization": 0.362,
+      "duration_seconds": 345.8528633117676,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.005719150767266264,
+        "max_action_change": 1.000451695779399,
+        "std_action_change": 0.024214367378411913,
+        "action_smoothness_score": 0.9994140080004268,
+        "mean_joint_acceleration": 0.003537870092870028,
+        "max_joint_acceleration": 0.9942696258412489,
+        "joint_smoothness_score": 0.9991248867883833,
+        "overall_smoothness": 0.999269447394405
+      }
+    }
+  ]
+}

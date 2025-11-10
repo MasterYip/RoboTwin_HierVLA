@@ -1,0 +1,63 @@
+{
+  "aggregate_metrics": {
+    "policy_name": "pi0",
+    "task_config": "demo_randomized",
+    "ckpt_setting": "flatpi0_multask",
+    "total_episodes": 1,
+    "success_metrics": {
+      "success_rate": 0.0,
+      "success_count": 0,
+      "failure_count": 1
+    },
+    "step_metrics": {
+      "mean_steps": 500.0,
+      "std_steps": 0.0,
+      "min_steps": 500,
+      "max_steps": 500,
+      "mean_steps_successful": 0.0
+    },
+    "duration_metrics": {
+      "mean_duration": 340.4647831916809,
+      "std_duration": 0.0,
+      "total_duration": 340.4647831916809
+    },
+    "smoothness_metrics": {
+      "mean_overall_smoothness": 0.0,
+      "std_overall_smoothness": 0.0,
+      "mean_action_smoothness": 0.0,
+      "mean_joint_smoothness": 0.0,
+      "mean_action_change": 0.0
+    },
+    "robustness_metrics": {
+      "mean_planning_failures": 0.0,
+      "total_planning_failures": 0,
+      "mean_collisions": 0.0,
+      "total_collisions": 0
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": 0,
+      "seed": 100000,
+      "task_name": "place_burger_fries",
+      "instruction": "Use both arms to place the hamburg with light brown top and the Golden fries in red carton box on the medium green tray for carrying.",
+      "success": false,
+      "completion_steps": 500,
+      "step_limit": 500,
+      "step_utilization": 1.0,
+      "duration_seconds": 340.4647831916809,
+      "planning_failures": 0,
+      "collision_count": 0,
+      "smoothness_metrics": {
+        "mean_action_change": 0.0072180627458235695,
+        "max_action_change": 0.859293446612178,
+        "std_action_change": 0.02611603041464408,
+        "action_smoothness_score": 0.9993184178264883,
+        "mean_joint_acceleration": 0.004132122538918509,
+        "max_joint_acceleration": 0.86002166005676,
+        "joint_smoothness_score": 0.9990539219906458,
+        "overall_smoothness": 0.9991861699085671
+      }
+    }
+  ]
+}
