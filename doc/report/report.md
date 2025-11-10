@@ -129,11 +129,37 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ## 3. 基线 VLA 策略 (Baseline: Flat VLA)
 
+<p align="center">
+  <img src="../imgs/FlatVLA.svg" height="300">
+  <br>
+  <text>基线 VLA 策略</text>
+</p>
+
 我们选用`pi0_base`预训练模型，并在`RoboTwin`平台的`demo_randomized`环境下进行微调，作为扁平化VLA策略的基线实现。该模型直接将视觉、语言和状态输入映射为动作输出，适用于多种操作任务。
 
 ---
 
-## 4. 单次规划 VLM-VLA 策略 (VLM-VLA Strategies)
+## 4. 单次规划 VLM-VLA 策略 (Single-Stage VLM-VLA Strategies)
+
+<p align="center">
+  <img src="../imgs/SimVLA.svg" height="400">
+  <br>
+  <text>单次规划 VLM-VLA 策略</text>
+</p>
+
+单次规划策略是分层VLA的一种简化实现方案，采用"一次性规划+顺序执行"的工作模式。与传统扁平化VLA相比，该策略引入了显式的任务分解环节，但相较于完整的两阶段规划机制，其规划过程仅在任务开始时执行一次。
+
+**工作流程**
+
+在任务执行前，系统调用Qwen3-VL-8B视觉-语言模型，输入主任务指令（如"整理桌面物品"）和初始视觉观测，要求模型生成一个固定的子任务序列。例如，模型可能将任务分解为：1) 识别并定位目标物体；2) 左臂抓取盘子；3) 右臂抓取杯子；4) 双臂协同移动至目标位置；5) 释放物体并归位。生成的子任务列表按照预设的执行步数（如每个子任务50步）依次传递给底层PI0执行器。底层执行器将每个子任务的文本描述作为语言条件，结合当前视觉观测和关节状态，生成对应的关节动作序列。
+
+**技术特点**
+
+该策略的核心优势在于其简洁性和可预测性。由于规划过程仅执行一次，系统避免了重复调用VLM带来的推理开销，推理延迟相较于扁平化基线仅增加初始的一次VLM调用（约1-2秒）。在执行阶段，系统完全依赖预先生成的子任务序列和固定的步数分配策略，不进行任何动态调整。这种设计使得系统行为高度可重现，便于调试和性能分析。
+
+**局限性分析**
+
+单次规划策略存在明显的鲁棒性短板。首先，固定的子任务执行步数无法适应实际执行速度的差异——简单的抓取动作可能在20步内完成，而复杂的双臂协同操作可能需要80步以上。其次，由于缺乏执行过程中的反馈机制，系统无法感知子任务是否真正完成。若某个子任务因环境干扰未能按时完成，后续子任务仍会按照预定计划强制推进，导致任务失败。第三，初始规划基于任务开始时的单一观测，无法预见执行过程中的意外情况（如物体滑落、碰撞干扰等），缺乏应变能力。
 
 ---
 
@@ -153,7 +179,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 <p align="center">
   <img src="../imgs/HierVLA_sch.svg" height="600">
   <br>
-  <text>工作流程图示 (Workflow Diagram)</text>
+  <text>基于视觉反馈的 VLM-VLA 策略</text>
 </p>
 
 ### 4.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
@@ -363,113 +389,170 @@ $$
 
 ## 6. 性能对比 (Performance Comparison)
 
-### 6.1. 实验1
+### 6.1. 实验1：分层VLA策略对比 (Experiment 1: Hierarchical VLA Strategy Comparison)
 
-Base Model: finetuned pi0 (10000 episode on several tasks)
-VLA Framework:
+**基础模型配置**
 
-* Flat model
-* First plan steps and input all at once
-* Replan steps every 10 sim step, pass current step instruction
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 10,000个episode |
+| 数据集构成 | 多任务混合训练 |
+| 任务类型 | 几个 `demo_clean` 和 `demo_randomized` 混合任务数据 |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
 
-[实验1 VLM-VLA实验数据](data/VLA_compare.csv)
-![alt text](../imgs/exp1_vlacmp.png)
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 单次规划VLM-VLA | **Sim VLA** | 任务开始时一次性分解，按固定步数执行 | 一次性VLM调用，固定步数分配 |
+| 基于视觉反馈的VLM-VLA(**老版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
+
+<p align="center">
+  <img src="../imgs/burger_fries_place.png" height="200">
+  <br>
+  <text>实验1 - 三种VLA策略性能对比</text>
+</p>
+
+**实验数据**
+
+详见 [`data/VLA_compare.csv`](./data/VLA_compare.csv)
+
+<p align="center">
+  <img src="../imgs/exp1_vlacmp.png" height="400">
+  <br>
+  <text>实验1 - 三种VLA策略性能对比</text>
+</p>
+
+> 图中**SR_FLAT**代表基线**Flat VLA**的任务成功率，**SR_LYH**代表**单次规划VLM-VLA**的成功率，**SR_YL**代表**基于视觉反馈的VLM-VLA**成功率。
+
+**简要分析**
+
+Flat VLA效果最差，Sim VLA有所提升，Hier VLA表现最佳。可见分层结构和视觉反馈机制提升了任务成功率。
 
 ### 实验2
 
+**基础模型配置**
+
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 30,000个episode |
+| 数据集构成 | 单任务训练 |
+| 任务类型 | `place_burger_fries-demo_randomized-50` |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
+
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 基于视觉反馈的VLM-VLA(**新版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
+
+**数据分析**
+<p align="center">
+  <img src="../imgs/SR_30000.png" height="200">
+  <img src="../imgs/SU_30000.png" height="200">
+</p>
+
+图中SR代表任务成功率，SU代表平均完成速度（所用步数/总步数上限）。
+多层VLM-VLA结构能够提高成功率，并且平均完成速度更快。
+
+### 实验3
+
+**基础模型配置**
+
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 10,000个episode |
+| 数据集构成 | 4个`demo_randomized`任务 |
+| 任务类型 | `blocks_ranking_rgb` `place_burger_fries` `place_cans_plasticbox` `shake_bottle` |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
+
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 基于视觉反馈的VLM-VLA(**新版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
+
+**数据分析**
+<p align="center">
+  <img src="../imgs/SR_multi10000.png" height="200">
+  <img src="../imgs/SU_multi10000.png" height="200">
+</p>
+
+图中SR代表任务成功率，SU代表平均完成速度（所用步数/总步数上限）。
+本实验中多层VLM-VLA结构在多任务混合训练下，依然能够显著提升成功率，且较**实验2**中过拟合的模型效果提升更多。平均完成速度差距不大。
+
+### 实验4
+
 我们对三种策略实现进行了对比实验：
 <p align="center">
-  <img src="../imgs/ablation_candidates.svg" height="600">
+  <img src="../imgs/ablation_candidates.svg" height="400">
   <br>
   <text>参与对比的策略。(a)FlatVLA为基线策略。 (b)Simple VLM-VLA进行了任务格式化分解。(c)Vision-Feedback VLM-VLA接入了重规划和视觉闭环 </text>
 </p>
 
-### 6.2. 评估维度 (Evaluation Metrics)
-
-我们将根据 `05-evaluation-pipeline.md` 文档，从以下三个维度进行评估：
-
-#### 1. 任务成功率 (Task Success Rate)
-
-* **指标**: `success_rate`。
-* **测试用例 (Test Cases)**:
-  * Blocks Ranking Size: `___________`
-  * Stack Blocks Three: `___________`
-  * Complex Task 1 (Assemble tools): `___________`
-  * Complex Task 2 (Organize utensils): `___________`
-
-#### 2. 动作合理性 (Action Rationality / Quality)
-
-* **指标 1 (效率)**: `average_steps` (平均步数) 和 `completion_time` (平均完成时间)。
-* **指标 2 (平滑度)**: `action_smoothness`。
-* **结果**:
-  * 平均步数: `___________`
-  * 动作平滑度: `___________`
-
-#### 3. 策略泛化能力 (Generalization Capability)
-
-* **方法**: 跨域评估（Cross-Domain Evaluation）。
-* **测试**: 使用在 `demo_clean` (干净) 配置下训练的模型，在 `demo_randomized` (视觉/物理随机化) 或 `hard_randomized` (困难随机化) 配置下进行评估。
-* **指标**: 成功率下降幅度。
-* **结果**:
-  * *Clean -> Randomized 成功率*: `___________`
-
-### 6.3. 结果汇总表 (Results Summary)
-
-| 策略 (Strategy) | 成功率 (SR) (简单任务) | 成功率 (SR) (复杂任务) | 动作质量 (平滑度/效率) | 泛化能力 (SR in Randomized) |
-|:--- |:--- |:--- |:--- |:--- |
-| **Flat VLA (基线)** | `___________` | `___________` | `___________` | `___________` |
-| **Strategy 1 (外部)** | `___________` | `___________` | `___________` | `___________` |
-| **Strategy 2 (内部)** | `___________` | `___________` | `___________` | `___________` |
+未完成。
 
 ---
 
 ## 7. 消融与机制分析 (Ablation Studies & Analysis)
 
-### 7.1. 消融实验 (Ablation Experiments)
+### 7.1. 实验结果分析 (Ablation Experiments)
 
-* **实验 1: 规划器 vs 执行器 (Planner vs. Executor)**
-  * *目的*: 验证 `TaskDecompositionModule` (高层规划器) 的必要性。
-  * *设置*: 仅使用 `Strategy 1`，将其中的高层规划器替换为一个“扁平”的指令（即直接将原始复杂指令"整理餐桌"喂给`GraspController`）。
-  * *预期*: 任务失败，证明高层规划器对于理解复杂指令至关重要。
-  * *结果*: `___________`
+1. **分层结构的优势**：在微调pi0模型中`RoboTwin`提供的Instruction，为任务的完整Task，并且形式多样，有时缺乏严格的逻辑顺序。分层VLA策略通过引入高层规划器，**有效地将复杂任务分解为多个子任务，降低了单一模型处理复杂指令的难度**，从而提升了任务成功率。
+2. **视觉反馈机制的作用**：基于视觉反馈的动态重规划和完成度评估，使得模型**能够实时调整执行策略，适应环境变化，指导下层VLA进行重规划**，提高了任务的鲁棒性和成功率。
+3. **格式化提示词设计**：通过精心设计的提示词，**确保VLM输出结构化且易于解析的信息（例如分别提供左臂右臂对应的子任务），减少语义歧义**，提高了规划的准确性。
 
-* **实验 2: 专用技能 vs 通用技能 (Specialized vs. General Skills)**
-  * *目的*: 验证 `SkillController` 模块化的优势。
-  * *设置*: 在 `Strategy 2` 中，将所有专用的 `SkillController` (Reach, Grasp, Place) 替换为同一个 `Flat VLA` (PI0基线) 来执行所有子任务。
-  * *预期*: 成功率下降，或样本效率降低。证明专用技能控制器在学习效率和鲁棒性上的优势。
-  * *结果*: `___________`
-
-### 7.2. 洞察与改进 (Insights & Improvements)
+### 7.2. 改进与展望 (Insights & Improvements)
 
 * **优势与权衡 (Strengths & Weaknesses)**:
   * **Flat VLA**:
     * *优势*: 结构简单，端到端。
-    * *劣势*: 可解释性差，难以调试，泛化能力弱，样本效率低。
+    * *劣势*: 可解释性差，难以调试，样本效率低。
   * **Hierarchical (分层策略)**:
-    * *优势*: **可解释性强** (显式的子目标)；**样本效率高** (模块化学习，预期2-3倍提升)；**泛化性强** (技能可组合、可复用)；**易于调试**。
-    * *权衡 (Trade-off)*: 增加了**推理开销** (约 20ms) 和 **GPU显存占用** (约 1GB)。
+    * *优势*: **可解释性强** (显式的子目标)；**成功率更高**。
+    * *权衡 (Trade-off)*: 增加了**推理开销** (约 800ms) 和 **GPU显存占用** (约 8GB)。
 
-* **未来改进路径 (Optimization Paths)**:
-  * **Phase 2**: 扩展技能库（`SkillController`），支持工具使用、双臂协同；实现动态重规划（Dynamic Re-planning）。
-  * **Phase 3**: 实现技能的在线学习（Online Adaptation）和从演示中学习（Learning from Demonstrations）。
-
----
-
-## 8. 时间线与里程碑 (Timeline & Milestones)
-
-* [x] 环境搭建与数据收集脚本分析 (`T=0-2h`)
-* [ ] 基线 Flat VLA 训练与评估 (`T=2-12h`)
-* [ ] 分层策略 1 (外部) 实现与调试 (`T=6-24h`)
-* [ ] 分层策略 2 (内部) 数据准备与实现 (`T=6-30h`)
-* [ ] 性能评估与数据汇总 (`T=30-40h`)
-* [ ] 消融实验 (`T=40-44h`)
-* [ ] 最终分析与报告撰写 (`T=44-48h`)
+* **改进路径 (Optimization Paths)**:
+  * 分层架构实际上是冗余的妥协方式，难以进行联合微调，容易导致分布偏移和潜空间对齐困难的问题，内化分层或是统一模型(COTA, Chain of Thoughts and Action)的潜力值得探索。
 
 ---
 
 ## 9. 备注与问题记录 (Notes & Issues)
 
-### 9.3. 参考资料 (References)
+### 9.2. 已知问题 (Known Issues)
+
+* 数据收集路径问题
+  * 路径有问题的，可以试一下运行 python ./script/update_embodiment_config_path.py，正常的话应该是这样
+
+* cudnn: undefined error
+  * 系统cudnn版本for 12.4
+  * 环境匹配时系统cudnn优先级似乎更高，删除即可。
+
+### 9.2. 参考资料 (References)
 
 * [1] RoboTwin2 Official Doc: <https://robotwin-platform.github.io/doc/usage/index.html>
 * [2] DeepWiki: <https://deepwiki.com/RoboTwin-Platform/RoboTwin>
