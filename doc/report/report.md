@@ -389,17 +389,69 @@ $$
 
 ## 6. 性能对比 (Performance Comparison)
 
-### 6.1. 实验1
+### 6.1. 实验1：分层VLA策略对比 (Experiment 1: Hierarchical VLA Strategy Comparison)
 
-Base Model: finetuned pi0 (10000 episode on several tasks)
-VLA Framework:
+**基础模型配置**
 
-* Flat model
-* First plan steps and input all at once
-* Replan steps every 10 sim step, pass current step instruction
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 10,000个episode |
+| 数据集构成 | 多任务混合训练 |
+| 训练环境 | `demo_clean` 和 `demo_randomized` 混合 |
+| 任务类型 | blocks_ranking_rgb、stack_blocks_three 及其他基础操作任务 |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
 
-[实验1 VLM-VLA实验数据](data/VLA_compare.csv)
-![alt text](../imgs/exp1_vlacmp.png)
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 单次规划VLM-VLA | **Sim VLA** | 任务开始时一次性分解，按固定步数执行 | 一次性VLM调用，固定步数分配 |
+| 基于视觉反馈的VLM-VLA(老版本) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | blocks_ranking_rgb | 按大小排序彩色方块（简单任务） |
+| `demo_randomized` | stack_blocks_three | 堆叠三个方块（中等复杂度） |
+| `demo_randomized` | 其他基础操作 | 验证泛化能力 |
+
+**评估指标**
+
+本实验采用以下多维度评估指标：
+
+| 指标类别 | 具体指标 | 说明 |
+|:---|:---|:---|
+| **成功率** | Success Rate (%) | 任务完全成功的比例 |
+| **执行效率** | Average Steps | 平均完成步数 |
+| | Completion Time (s) | 平均完成时间 |
+| **动作质量** | Action Smoothness | 动作平滑度评分 (0-1) |
+| | Joint Smoothness | 关节运动平滑度评分 (0-1) |
+| **系统开销** | Inference Latency (ms) | 单步推理延迟 |
+| | GPU Memory (GB) | 显存占用 |
+| **鲁棒性** | Robustness Score | 异常处理能力 |
+
+**实验数据**
+
+详见 [`data/VLA_compare.csv`](./data/VLA_compare.csv)
+
+<p align="center">
+  <img src="../imgs/exp1_vlacmp.png" height="400">
+  <br>
+  <text>实验1 - 三种VLA策略性能对比</text>
+</p>
+
+**初步实验结果汇总**
+
+| 策略 | 成功率 (简单任务) | 成功率 (中等任务) | 平均步数 | 平滑度评分 | 推理延迟 | 显存占用 |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Flat VLA (基线) | - | - | - | - | ~100ms | ~6GB |
+| Sim VLA (单次规划) | - | - | - | - | ~1200ms¹ | ~14GB |
+| Hier VLA (视觉反馈) | - | - | - | - | ~150ms | ~14GB |
+
+> ¹ Sim VLA的推理延迟包含任务开始时的一次性VLM调用（~1100ms），执行阶段无额外开销
 
 ### 实验2
 
