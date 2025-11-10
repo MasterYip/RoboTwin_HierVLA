@@ -398,8 +398,7 @@ $$
 | 基础模型 | PI0 (PaliGemma-based VLA) |
 | 微调数据 | 10,000个episode |
 | 数据集构成 | 多任务混合训练 |
-| 训练环境 | `demo_clean` 和 `demo_randomized` 混合 |
-| 任务类型 | blocks_ranking_rgb、stack_blocks_three 及其他基础操作任务 |
+| 任务类型 | 几个 `demo_clean` 和 `demo_randomized` 混合任务数据 |
 | 微调配置 | `pi0_base_aloha_robotwin_full` |
 
 **参与对比的策略**
@@ -408,30 +407,14 @@ $$
 |:---|:---|:---|:---|
 | 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
 | 单次规划VLM-VLA | **Sim VLA** | 任务开始时一次性分解，按固定步数执行 | 一次性VLM调用，固定步数分配 |
-| 基于视觉反馈的VLM-VLA(老版本) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+| 基于视觉反馈的VLM-VLA(**老版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
 
 **实验场景与任务**
 
 | 测试环境 | 任务 | 说明 |
 |:---|:---|:---|
-| `demo_randomized` | blocks_ranking_rgb | 按大小排序彩色方块（简单任务） |
-| `demo_randomized` | stack_blocks_three | 堆叠三个方块（中等复杂度） |
-| `demo_randomized` | 其他基础操作 | 验证泛化能力 |
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
 
-**评估指标**
-
-本实验采用以下多维度评估指标：
-
-| 指标类别 | 具体指标 | 说明 |
-|:---|:---|:---|
-| **成功率** | Success Rate (%) | 任务完全成功的比例 |
-| **执行效率** | Average Steps | 平均完成步数 |
-| | Completion Time (s) | 平均完成时间 |
-| **动作质量** | Action Smoothness | 动作平滑度评分 (0-1) |
-| | Joint Smoothness | 关节运动平滑度评分 (0-1) |
-| **系统开销** | Inference Latency (ms) | 单步推理延迟 |
-| | GPU Memory (GB) | 显存占用 |
-| **鲁棒性** | Robustness Score | 异常处理能力 |
 
 **实验数据**
 
@@ -443,17 +426,81 @@ $$
   <text>实验1 - 三种VLA策略性能对比</text>
 </p>
 
-**初步实验结果汇总**
+> 图中**SR_FLAT**代表基线**Flat VLA**的任务成功率，**SR_LYH**代表**单次规划VLM-VLA**的成功率，**SR_YL**代表**基于视觉反馈的VLM-VLA**成功率。
 
-| 策略 | 成功率 (简单任务) | 成功率 (中等任务) | 平均步数 | 平滑度评分 | 推理延迟 | 显存占用 |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Flat VLA (基线) | - | - | - | - | ~100ms | ~6GB |
-| Sim VLA (单次规划) | - | - | - | - | ~1200ms¹ | ~14GB |
-| Hier VLA (视觉反馈) | - | - | - | - | ~150ms | ~14GB |
+**简要分析**
 
-> ¹ Sim VLA的推理延迟包含任务开始时的一次性VLM调用（~1100ms），执行阶段无额外开销
+Flat VLA效果最差，Sim VLA有所提升，Hier VLA表现最佳。可见分层结构和视觉反馈机制提升了任务成功率。
 
 ### 实验2
+
+
+**基础模型配置**
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 30,000个episode |
+| 数据集构成 | 单任务训练 |
+| 任务类型 | `place_burger_fries-demo_randomized-50` |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
+
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 基于视觉反馈的VLM-VLA(**新版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
+
+
+**数据分析**
+<p align="center">
+  <img src="../imgs/SR_30000.png" height="200">
+  <img src="../imgs/SU_30000.png" height="200">
+</p>
+
+图中SR代表任务成功率，SU代表平均完成速度（所用步数/总步数上限）。
+多层VLM-VLA结构能够提高成功率，并且平均完成速度更快。
+
+### 实验3
+
+**基础模型配置**
+| 项目 | 详情 |
+|:---|:---|
+| 基础模型 | PI0 (PaliGemma-based VLA) |
+| 微调数据 | 10,000个episode |
+| 数据集构成 | 4个`demo_randomized`任务 |
+| 任务类型 | `blocks_ranking_rgb` `place_burger_fries` `place_cans_plasticbox` `shake_bottle` |
+| 微调配置 | `pi0_base_aloha_robotwin_full` |
+
+**参与对比的策略**
+
+| 策略名称 | 简称 | 说明 | 核心特点 |
+|:---|:---|:---|:---|
+| 扁平化VLA (基线) | **Flat VLA** | 微调后的PI0直接推理 | 端到端映射，无高层规划 |
+| 基于视觉反馈的VLM-VLA(**新版本**) | **Hier VLA** | 定期重规划+视觉感知完成度评估 | 动态重规划，基于视觉反馈推进 |
+
+**实验场景与任务**
+
+| 测试环境 | 任务 | 说明 |
+|:---|:---|:---|
+| `demo_randomized` | place_burger_fries-demo_randomized-50 | 将薯条和汉堡放入托盘 |
+
+**数据分析**
+<p align="center">
+  <img src="../imgs/SR_multi10000.png" height="200">
+  <img src="../imgs/SU_multi10000.png" height="200">
+</p>
+
+图中SR代表任务成功率，SU代表平均完成速度（所用步数/总步数上限）。
+本实验中多层VLM-VLA结构在多任务混合训练下，依然能够显著提升成功率，且较**实验2**中过拟合的模型效果提升更多。平均完成速度差距不大。
+
+### 实验4
 
 我们对三种策略实现进行了对比实验：
 <p align="center">
@@ -461,6 +508,8 @@ $$
   <br>
   <text>参与对比的策略。(a)FlatVLA为基线策略。 (b)Simple VLM-VLA进行了任务格式化分解。(c)Vision-Feedback VLM-VLA接入了重规划和视觉闭环 </text>
 </p>
+
+#TODO
 
 ### 6.2. 评估维度 (Evaluation Metrics)
 
