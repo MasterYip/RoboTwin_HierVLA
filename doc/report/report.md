@@ -1,7 +1,8 @@
 # Group003 项目报告：扁平化与分层VLA策略对比分析
 
-**项目成员:**  叶雷 (镜像搭建以及任务实现)，李毅恒(分层策略以及任务实现), C角 (消融实验以及报告)
-**项目周期:** 48小时
+* **项目成员:**  叶雷 (镜像搭建以及任务实现)，李毅恒(分层策略以及任务实现), 王睿 (消融实验以及报告)
+* **项目周期:** 48小时
+* **项目代码:** [MasterYip/RoboTwin_HierVLA](https://github.com/MasterYip/RoboTwin_HierVLA)
 
 ---
 
@@ -82,7 +83,6 @@ bash collect_data.sh blocks_ranking_rgb demo_randomized 1
 mkdir processed_data && mkdir training_data
 # bash process_data_pi0.sh ${task_name} ${task_config} ${expert_data_num}
 bash process_data_pi0.sh stack_blocks_three demo_randomized 50
-bash process_data_pi0.sh place_burger_fries demo_randomized 50
 
 # hdf5_path: The path to the generated HDF5 data (e.g., ./training_data/${model_name}/)
 # bash generate.sh ${hdf5_path} ${repo_id}
@@ -228,13 +228,6 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 ### 5.1. 基准测试框架概述 (Benchmark Framework Overview)
 
 为了系统性地评估不同VLA策略的性能，我们开发了一套自动化的基准测试框架。该框架不仅记录传统的成功率指标，还引入了多维度的定量评估体系，包括动作平滑度、执行效率、系统鲁棒性等关键指标。
-
-**设计目标 (Design Objectives):**
-
-1. **全面性 (Comprehensiveness)**: 覆盖任务成功率、执行效率、动作质量、系统鲁棒性四大维度
-2. **自动化 (Automation)**: 无需人工干预，自动记录所有关键指标
-3. **可追溯性 (Traceability)**: 保存每个episode的详细数据，支持事后分析
-4. **可视化友好 (Visualization-Ready)**: 输出JSON格式，便于生成图表和报告
 
 ### 5.2. 核心模块设计 (Core Module Design)
 
