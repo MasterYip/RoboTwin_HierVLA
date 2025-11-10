@@ -183,54 +183,7 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ### 3.2. 工作流程图示 (Workflow Diagram)
 
-```mermaid
-graph TD
-    A[任务开始<br/>Task Instruction] --> B[Phase 1: 初始规划<br/>Initial Planning]
-    B --> C[Qwen3-VL<br/>High-Level Planner]
-    C --> D[生成固定高层计划<br/>3-6 High-Level Steps - Fixed]
-    D --> E{执行循环<br/>Execution Loop}
-    
-    E --> F[Phase 2: 双重任务<br/>Dual Tasks Every N Steps]
-    F --> G[Qwen3-VL<br/>Progress-Aware Planning + Evaluation]
-    G --> H[当前观测 + 计划进度<br/>Current Images + Progress Context]
-    H --> I[任务1: 生成运动级指令<br/>Task 1: Motion Command]
-    H --> J[任务2: 视觉完成度评估<br/>Task 2: Visual Completion Check]
-    
-    I --> K[运动指令输出<br/>Motion-Level Command]
-    J --> L{当前子任务完成?<br/>SUBTASK_COMPLETE: YES/NO}
-    
-    L -->|YES - 基于视觉证据| M[自动推进至下一子任务<br/>Auto Advance to Next Subtask]
-    L -->|NO - 继续执行| N[保持当前子任务<br/>Stay on Current Subtask]
-    
-    M --> O[更新进度标记<br/>Update Progress Markers]
-    N --> O
-    O --> K
-    
-    K --> P[PI0 Executor<br/>Low-Level VLA]
-    P --> Q[动作块输出<br/>Action Chunk: 10×14]
-    Q --> R[环境执行<br/>Environment Step]
-    
-    R --> S{步数计数器<br/>Step Counter}
-    S -->|每10步| F
-    S -->|继续执行| E
-    
-    R --> T{整体任务完成?<br/>All Subtasks Done?}
-    T -->|否| E
-    T -->|是| U[任务结束<br/>Task Complete]
-    
-    style B fill:#e1f5ff
-    style F fill:#fff4e1
-    style G fill:#ffe1e1
-    style J fill:#ffe6cc
-    style L fill:#d4edda
-    style M fill:#d1ecf1
-    style P fill:#e1ffe1
-    
-    classDef perceptionNode fill:#ffe6cc,stroke:#ff9900,stroke-width:3px
-    classDef autoAdvance fill:#d1ecf1,stroke:#0099cc,stroke-width:3px
-    class J perceptionNode
-    class M autoAdvance
-```
+![alt text](../imgs/HierVLA_sch.svg)
 
 **关键改进说明 (Key Improvements):**
 

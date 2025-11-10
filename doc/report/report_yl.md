@@ -168,43 +168,14 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ### 5.1 框架架构图
 
-<p align="center">
+<!-- <p align="center">
   <img src="../figs/hiervla_pipeline.png" width="800">
   <br>
   <em>图2: 层级化VLA两阶段框架流程图</em>
-</p>
+</p> -->
 
-### 5.2 核心设计理念
+![alt text](../imgs/HierVLA_sch.svg)
 
-```mermaid
-graph TD
-    A[语言指令<br/>Language Instruction] --> B[高层规划器<br/>High-level Planner]
-    B --> C1[子任务1<br/>Subtask 1]
-    B --> C2[子任务2<br/>Subtask 2]
-    B --> C3[子任务3<br/>Subtask 3]
-    
-    C1 --> D1[低层执行器1<br/>Low-level Executor 1]
-    C2 --> D2[低层执行器2<br/>Low-level Executor 2]
-    C3 --> D3[低层执行器3<br/>Low-level Executor 3]
-    
-    D1 --> E1[动作序列1<br/>Actions 1]
-    D2 --> E2[动作序列2<br/>Actions 2]
-    D3 --> E3[动作序列3<br/>Actions 3]
-    
-    E1 --> F[任务完成<br/>Task Completed]
-    E2 --> F
-    E3 --> F
-    
-    style A fill:#FFE4B5
-    style B fill:#4A90E2,color:#fff
-    style C1 fill:#87CEEB
-    style C2 fill:#87CEEB
-    style C3 fill:#87CEEB
-    style D1 fill:#4A90E2,color:#fff
-    style D2 fill:#4A90E2,color:#fff
-    style D3 fill:#4A90E2,color:#fff
-    style F fill:#90EE90
-```
 
 ### 5.3 代码实现亮点
 
