@@ -206,6 +206,17 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 ## IV. 性能对比 (Performance Comparison)
 
+### 4.0. 实验1
+
+Base Model: finetuned pi0 (10000 episode on several tasks)
+VLA Framework:
+ - Flat model
+ - First plan steps and input all at once
+ - Replan steps every 10 sim step, pass current step instruction
+ 
+[text](data/VLA_compare.csv)
+
+
 ### 4.1. 评估维度 (Evaluation Metrics)
 
 我们将根据 `05-evaluation-pipeline.md` 文档，从以下三个维度进行评估：

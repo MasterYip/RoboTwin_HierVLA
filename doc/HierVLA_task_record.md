@@ -89,6 +89,7 @@ bash generate.sh ./training_data/flatpi0_multask/ flatpi0_multask
 ```bash
 # compute norm_stat for dataset
 # uv run scripts/compute_norm_stats.py --config-name ${train_config_name}
+# ENSURE repo_id in config.py is modified
 uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 
 # train_config_name: The name corresponding to the config in _CONFIGS, such as pi0_base_aloha_robotwin_full
@@ -97,6 +98,7 @@ uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 # bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
 #bash finetune.sh pi0_base_aloha_robotwin_full demo_clean 0,1,2,3
 bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0,1,2,3
+bash finetune.sh pi0_base_aloha_robotwin_full flatpi0_multask 0,1,2,3
 ```
 
 **Eval Trained Pi0 Model Commands**
@@ -192,6 +194,18 @@ pip install accelerate
   - Robustness: ___________
 
 ### Results Summary (结果汇总)
+
+#### Experiment 1
+
+Base Model: finetuned pi0 (10000 episode on several tasks)
+VLA Framework:
+ - Flat model
+ - First plan steps and input all at once
+ - Replan steps every 10 sim step, pass current step instruction
+
+[text](data/VLA_compare.csv)
+
+#### Experiment 2
 
 | Strategy | Success Rate | Action Quality | Generalization |
 |----------|--------------|----------------|----------------|
