@@ -35,19 +35,32 @@
 * 数据采集与处理脚本
 此镜像可一键部署，方便团队成员快速搭建环境。
 
-![alt text](../imgs/docker_images.png)
+<p align="center">
+  <img src="../imgs/docker_images.png" height="300">
+  <br>
+  <text>Docker系列镜像</text>
+</p>
 
 ### 2.2. 代码管理与协作 (Code Management)
 
 基于`RoboTwin`开源代码仓库，创建`RoboTwin_HierVLA`新仓库，进行代码版本控制与协作开发。
 
-![alt text](../imgs/git_vcs.png)
+<p align="center">
+  <img src="../imgs/git_vcs.png" height="300">
+  <br>
+  <text>Docker系列镜像</text>
+</p>
 
 ### 2.3. Xmind思维导图工作流 (Xmind Workflow)
 
 基于Xmind思维导图，规划项目工作流与任务分配，确保各成员明确职责与时间节点。
 
-![alt text](../imgs/task_assign.png) ![alt text](../imgs/task_decompose.png)
+<p align="center">
+  <img src="../imgs/task_assign.png" height="250">
+  <img src="../imgs/task_decompose.png" height="250">
+  <br>
+  <text>Xmind思维导图工作流</text>
+</p>
 
 ### 2.4. 数据采集与微调管线搭建 (Data Collection & Fine-tuning Pipeline)
 
@@ -72,7 +85,6 @@ bash process_data_pi0.sh stack_blocks_three demo_randomized 50
 bash process_data_pi0.sh place_burger_fries demo_randomized 50
 
 # hdf5_path: The path to the generated HDF5 data (e.g., ./training_data/${model_name}/)
-# repo_id: The name of the dataset (e.g., my_repo)
 # bash generate.sh ${hdf5_path} ${repo_id}
 bash generate.sh ./training_data/flatpi0/ flatpi0
 ```
@@ -91,8 +103,6 @@ bash generate.sh ./training_data/flatpi0/ flatpi0
 > Update openpi cache path by
 >
 > ```bash
-> export OPENPI_DATA_HOME=../../.cache/openpi
-> # Use abs dir
 > export OPENPI_DATA_HOME=/inspire/ssd/project/25jinqiu07/public/hiervla_003/RoboTwin_HierVLA/.cache/openpi
 > ```
 >
@@ -103,11 +113,7 @@ bash generate.sh ./training_data/flatpi0/ flatpi0
 # uv run scripts/compute_norm_stats.py --config-name ${train_config_name}
 uv run scripts/compute_norm_stats.py --config-name pi0_base_aloha_robotwin_full
 
-# train_config_name: The name corresponding to the config in _CONFIGS, such as pi0_base_aloha_robotwin_full
-# model_name: You can choose any name for your model
-# gpu_use: if not using multi gpu,set to gpu_id like 0;else set like 0,1,2,3
 # bash finetune.sh ${train_config_name} ${model_name} ${gpu_use}
-#bash finetune.sh pi0_base_aloha_robotwin_full demo_clean 0,1,2,3
 bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0,1,2,3
 ```
 
@@ -115,56 +121,15 @@ bash finetune.sh pi0_base_aloha_robotwin_full flatpi0 0,1,2,3
 
 ```bash
 # Under RoboTwin_HierVLA/policy/pi0 directory
-# ckpt_path like: policy/pi0/checkpoints/pi0_base_aloha_robotwin_full/demo_clean/30000
 bash eval.sh ${task_name} ${task_config} ${train_config_name} ${model_name} ${seed} ${gpu_id}
 bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full flatpi0 0 0
-# bash eval.sh beat_block_hammer demo_clean pi0_base_aloha_robotwin_full demo_clean 0 0
-# This command trains the policy using the `demo_clean` setting ($model_name)
-# and evaluates it using the same `demo_clean` setting ($task_config).
-
-# To evaluate a policy trained on the `demo_clean` setting and tested on the `demo_randomized` setting, run:
-# bash eval.sh blocks_ranking_rgb demo_randomized pi0_base_aloha_robotwin_full demo_clean 0 0
 ```
 
 ---
 
 ## 3. 基线 VLA 策略 (Baseline: Flat VLA)
 
-本部分由**叶雷**同学负责复现，作为后续所有分层策略的“控制组”和“底层执行器”基础。
-
-### 3.1. 模型与环境 (Model & Environment)
-
-* **模型选型 (Model Selection)**: **π₀ (PI0)**。
-  * *描述*: PI0 是一个为机器人操作设计的基础视觉-语言-动作模型。它通过一个多模态Transformer骨干网络，融合语言指令、多视角图像和关节状态，以自回归方式生成“动作块”(Action Chunk)。
-* **仿真平台 (Platform)**: **RoboTwin**。
-  * *描述*: RoboTwin 是一个支持双臂机器人操作的仿真环境。
-  * *观测空间*: 多模态输入，包括3个RGB摄像头（Head, Left, Right）和14维的关节状态向量。
-* **Docker 镜像 (Image)**: `25fall-masteryip-hier-vla:v1.0_gpu`
-  * Image: `25fall-masteryip-hier-vla:v1.0_gpu`
-    ![alt text](../imgs/docker_image.png)
-
-### 3.2. 任务类型 (Task Types)
-
-* **简单任务 (Simple Tasks)**:
-  * [x] `blocks_ranking_rgb` (按大小排列方块)
-  * [x] `stack_blocks_three` (堆叠三个方块)
-* **复杂任务 (Complex Tasks)**:
-  * [ ] "按指令组装工具" (Assemble tools by instruction)
-  * [ ] "整理混杂餐具并归位" (Organize and return utensils)
-  * [ ] `beat_block_hammer` (双臂协同任务)
-
-### 3.3. 扁平化策略实现 (Flat VLA Implementation)
-
-* **架构**:
-    1. **输入 (Input)**: 自然语言指令 (`prompt`) + 3路RGB图像 (`cam_high`, `cam_left_wrist`, `cam_right_wrist`) + 14维关节状态 (`state`)。
-    2. **编码 (Encoding)**: Vision Encoder (Vision), Language Encoder (Language), State Encoder (State)。
-    3. **融合 (Fusion)**: Multi-Modal Fusion 模块。
-    4. **核心 (Core)**: Transformer Backbone。
-    5. **输出 (Output)**: Action Decoder 生成 `[Horizon, Action_Dim]` (例如 `[10, 14]`) 的关节速度动作块。
-* **训练进展 (Training Progress)**:
-  * *数据集准备 (Dataset preparation)*: `pi0_base_aloha_robotwin_full` (使用 `demo_clean` 配置)。
-  * *训练状态 (Training status)*: `___________`
-  * *基线检查点 (Baseline Checkpoint)*: `___________`
+我们选用`pi0_base`预训练模型，并在`RoboTwin`平台的`demo_randomized`环境下进行微调，作为扁平化VLA策略的基线实现。该模型直接将视觉、语言和状态输入映射为动作输出，适用于多种操作任务。
 
 ---
 
@@ -181,31 +146,11 @@ bash eval.sh place_burger_fries demo_randomized pi0_base_aloha_robotwin_full fla
 
 该设计参考了Hi Robot等工作中的分层提示策略（Hierarchical Prompting），但在实现上进行了针对性改进，以解决传统分层方法中存在的计划一致性问题。
 
-### 4.2. 工作流程图示 (Workflow Diagram)
-
-![alt text](../imgs/HierVLA_sch.svg)
-
-**关键改进说明 (Key Improvements):**
-
-1. **双重任务机制 (Dual-Task Mechanism)**: Phase 2现在明确显示VLM同时执行两个任务
-   * 任务1: 生成运动级指令 (Motion Command Generation)
-   * 任务2: 基于视觉的完成度评估 (Visual Completion Evaluation)
-
-2. **感知驱动判断 (Perception-Driven Decision)**:
-   * 橙色高亮节点 `J` 表示视觉感知评估
-   * 绿色决策节点 `L` 根据VLM的视觉判断（YES/NO）决定是否推进
-
-3. **自动推进 (Automatic Advancement)**:
-   * 蓝色高亮节点 `M` 表示系统自动推进至下一子任务
-   * **移除**了旧版的"手动推进"节点，改为基于感知的自动化决策
-
-4. **固定计划 (Fixed Plan)**:
-   * 节点 `D` 强调初始计划在执行过程中保持不变
-   * 所有后续决策都参考这一固定计划的进度
-
-5. **视觉证据要求 (Visual Evidence Requirement)**:
-   * `YES`分支明确标注"基于视觉证据"
-   * 强调完成度判断必须有图像中的可见证据支持
+<p align="center">
+  <img src="../imgs/HierVLA_sch.svg" height="600">
+  <br>
+  <text>工作流程图示 (Workflow Diagram)</text>
+</p>
 
 ### 4.3. 两阶段规划机制 (Two-Phase Planning Mechanism)
 
@@ -354,51 +299,6 @@ PROGRESS_SUMMARY: Approaching target object, grasp action in progress.
 3. **默认值兜底**：解析完全失败时，默认为NO（保守策略，避免错误推进）
 
 这确保了即使VLM偶尔输出格式不规范，系统仍能稳定运行。
-
-### 4.5. 实现状态与技术指标 (Implementation Status & Metrics)
-
-* **高层规划器 (High-level planner)**: ✅ 已实现
-  * *输入*: 主任务指令 + 当前RGB观测（3视角） + 关节状态（可选）
-  * *输出*:
-    * 初始规划阶段：3-6步高层子任务列表（结构化文本）
-    * 执行阶段：运动级指令 + **基于视觉的完成度评估** + 推理依据 + 进度摘要
-  * *推理延迟*:
-    * 初始规划：约1.2秒（仅调用一次）
-    * 完成度评估：约1.5秒（每10步调用一次，包含运动指令生成+完成度判断）
-  * *显存占用*: ~8GB（Qwen3-VL-8B模型）
-
-* **底层执行器 (Low-level executor)**: ✅ 复用PI0基线
-  * *输入*: 运动级指令（由规划器生成） + 当前观测
-  * *输出*: 动作块（10×14，10步关节速度）
-  * *推理延迟*: ~100ms/step（与基线一致）
-  * *显存占用*: ~4GB（PI0-Base模型）
-
-* **集成状态 (Integration status)**: ✅ 完成
-  * 代码已集成至 `policy/pi0/` 目录
-  * 已通过接口兼容性测试
-  * 支持通过配置参数一键切换扁平化/分层模式
-
-* **实测挑战与优化**:
-  * **推理延迟**: 分层策略的总延迟为 ~100ms（PI0执行） + 1.5s/10步（Qwen3-VL规划+评估） ≈ **150ms/step** 平均延迟。相比原先的120ms/step，增加了约30ms是因为完成度评估需要更长的生成序列（包含四个结构化字段）。通过调整`replan_frequency`参数（如设为15步），可降低至125ms/step。
-  
-  * **显存管理**: 总显存需求约12GB（8GB Qwen3-VL + 4GB PI0）。在显存受限环境下，可通过量化（如4-bit量化）将Qwen3-VL压缩至5GB，总需求降至9GB。
-  
-  * **评估准确性（Evaluation Accuracy）**:
-    * **初步测试结果**：在简单任务（`stack_blocks_three`）中，VLM的完成度判断准确率约85%（基于人工标注的ground truth对比）。主要错误类型为"过早判断完成"（约10%）和"延迟判断完成"（约5%）。
-    * **优化方向**：通过few-shot提示词（在提示中加入2-3个标注样本）可将准确率提升至90%以上。
-    * **容错机制**：由于每10步重新评估一次，即使单次误判，下次评估也能纠正，实际影响较小。
-  
-  * **计划质量（Plan Quality）**:
-    * Qwen3-VL在简单任务（如`stack_blocks_three`）上能稳定生成3-4步合理计划，计划完整性100%。
-    * 复杂任务（如`beat_block_hammer`，双臂协同）可能需要few-shot提示词优化，当前计划合理性约75%。
-    * 运动级指令的可执行性约80%，部分指令过于抽象（如"调整姿态"），需进一步细化提示词。
-
-* **感知评估的优势验证（Perception-Based Evaluation Benefits）**:
-  * **对比实验设置**：在相同任务上分别测试"固定步数推进"（50步/子任务）和"视觉感知推进"两种方法。
-  * **结果**（初步数据，基于10次试验平均）：
-    * 任务完成时间：视觉感知推进平均减少15%（因提前完成的子任务能立即推进）
-    * 子任务边界准确性：视觉感知推进准确率85% vs 固定步数50%（固定步数常在子任务中途或延后推进）
-    * 鲁棒性：视觉感知推进在随机化环境中成功率提升约10%（能适应执行速度变化）
 
 ---
 
@@ -720,6 +620,8 @@ VLA Framework:
 * **未来改进路径 (Optimization Paths)**:
   * **Phase 2**: 扩展技能库（`SkillController`），支持工具使用、双臂协同；实现动态重规划（Dynamic Re-planning）。
   * **Phase 3**: 实现技能的在线学习（Online Adaptation）和从演示中学习（Learning from Demonstrations）。
+
+### 7.3
 
 ---
 
