@@ -273,6 +273,54 @@ class EpisodeBenchmark:
     collision_count: int     # 碰撞次数
 ```
 
+**核心方法**:
+
+* `record_step(action, joint_state)`: 在每个仿真步骤调用，自动记录动作和关节状态
+
+  ```python
+  def record_step(self, action: np.ndarray, joint_state: np.ndarray):
+      self.actions.append(action.copy())
+      self.joint_states.append(joint_state.copy())
+      self.completion_steps += 1
+      
+      # 计算动作速度（相邻步骤的动作差）
+      if len(self.actions) > 1:
+          action_diff = np.abs(self.actions[-1] - self.actions[-2])
+          self.action_velocities.append(action_diff)
+      
+      # 计算关节加速度（二阶导数）
+      if len(self.joint_states) > 2:
+          vel_curr = self.joint_states[-1] - self.joint_states[-2]
+          vel_prev = self.joint_states[-2] - self.joint_states[-3]
+          accel = np.abs(vel_curr - vel_prev)
+          self.joint_accelerations.append(accel)
+  ```
+
+* `compute_smoothness_metrics()`: 计算多种平滑度评分
+
+  ```python
+  def compute_smoothness_metrics(self) -> Dict[str, float]:
+      metrics = {}
+      
+      # 动作平滑度：基于动作变化的方差
+      action_vels = np.array(self.action_velocities)
+      variance = np.var(action_vels)
+      metrics['action_smoothness_score'] = 1.0 / (1.0 + variance)
+      
+      # 关节平滑度：基于关节加速度的方差
+      joint_accels = np.array(self.joint_accelerations)
+      jerk_variance = np.var(joint_accels)
+      metrics['joint_smoothness_score'] = 1.0 / (1.0 + jerk_variance)
+      
+      # 综合平滑度：两者的平均值
+      metrics['overall_smoothness'] = (
+          metrics['action_smoothness_score'] + 
+          metrics['joint_smoothness_score']
+      ) / 2.0
+      
+      return metrics
+  ```
+
 #### 2. PolicyBenchmark 类 (Policy-Level Aggregator)
 
 **功能**: 聚合多个episode的数据，计算整体统计指标。
