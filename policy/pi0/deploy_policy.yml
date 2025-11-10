@@ -9,6 +9,6 @@ instruction_type: unseen
 # Add Parameters You Need
 train_config_name: null
 model_name: null
-checkpoint_id: 10000
+checkpoint_id: 30000
 pi0_step: 50
 hierarchical: true
