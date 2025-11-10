@@ -13,7 +13,8 @@ task_config/
 **/.DS_Store
 
 # eval result
-eval_result/
+eval_result/**/*.mp4
+
 
 # Code Generation
 assets/*
